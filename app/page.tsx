@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "navigation";
+import { useRouter } from "next/navigation";
+import { lunarToSolar } from "@/lib/bazi/calendar";
 
 export default function Home() {
     const router = useRouter();
@@ -29,11 +30,13 @@ export default function Home() {
             const utcDate = new Date(localDate.getTime() - (tzOffsetMinutes * 60000));
             birthIsoUtc = utcDate.toISOString();
         } else {
-            // Mock conversion from Lunar to Solar
-            // In real app, call lunarToSolar from lib/bazi/calendar
-            // For now, approximate:
-            const solarDate = new Date(birthYear, birthMonth - 1, birthDay, birthHour);
-            solarDate.setDate(solarDate.getDate() + 30); // Mock jump
+            const solarDate = lunarToSolar({
+                year: birthYear,
+                month: birthMonth,
+                day: birthDay,
+                isLeap,
+            });
+            solarDate.setHours(birthHour);
             const utcDate = new Date(solarDate.getTime() - (tzOffsetMinutes * 60000));
             birthIsoUtc = utcDate.toISOString();
         }
@@ -49,129 +52,161 @@ export default function Home() {
     };
 
     return (
-        <main className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 space-y-8">
-                <div className="text-center">
-                    <h1 className="text-3xl font-bold text-slate-900">Hourly Choice Engine</h1>
-                    <p className="text-slate-500 mt-2 text-sm uppercase tracking-wider font-semibold">BaZi Analysis MVP</p>
-                </div>
+        <main className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-4 md:p-8">
+            {/* Decorative Orbs */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/20 rounded-full blur-[120px] animate-pulse"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
 
-                <div className="flex bg-slate-100 p-1 rounded-xl">
-                    <button
-                        onClick={() => setCalendarType("solar")}
-                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${calendarType === "solar" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
-                    >
-                        Solar (Gregorian)
-                    </button>
-                    <button
-                        onClick={() => setCalendarType("lunar")}
-                        className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${calendarType === "lunar" ? "bg-white text-indigo-600 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
-                    >
-                        Lunar (Chinese)
-                    </button>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    {calendarType === "solar" ? (
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Birth Date & Time</label>
-                            <input
-                                type="datetime-local"
-                                required
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                value={formData.birthDateTime}
-                                onChange={(e) => setFormData({ ...formData, birthDateTime: e.target.value })}
-                            />
+            <div className="z-10 w-full max-w-4xl grid md:grid-cols-2 gap-12 items-center">
+                {/* Hero Section */}
+                <div className="space-y-6 text-center md:text-left">
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest backdrop-blur-sm mb-2">
+                        AI-Driven Decision Intelligence
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-tight">
+                        Hourly <span className="text-gradient">Choice</span> Engine
+                    </h1>
+                    <p className="text-slate-400 text-lg md:text-xl font-medium leading-relaxed max-w-md">
+                        Unlock precision timing for your most critical moves using ancient wisdom and modern data.
+                    </p>
+                    <div className="flex flex-wrap gap-4 pt-4 justify-center md:justify-start">
+                        <div className="flex items-center space-x-2 text-slate-500 text-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                            <span>Personalized BaZi</span>
                         </div>
-                    ) : (
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2 col-span-2">
-                                <label className="text-sm font-medium text-slate-700">Lunar Year</label>
-                                <input
-                                    type="number"
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                    value={formData.birthYear}
-                                    onChange={(e) => setFormData({ ...formData, birthYear: Number(e.target.value) })}
-                                />
+                        <div className="flex items-center space-x-2 text-slate-500 text-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                            <span>DaYun Timeline</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-slate-500 text-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                            <span>Elements Analysis</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Form Section */}
+                <div className="glass-dark p-8 rounded-[2rem] relative group border-t border-slate-700/50">
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-[2rem] blur opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+                    <div className="relative space-y-8">
+                        <div className="flex p-1.5 bg-slate-950/50 rounded-2xl border border-slate-800 backdrop-blur-sm">
+                            <button
+                                onClick={() => setCalendarType("solar")}
+                                className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${calendarType === "solar" ? "bg-slate-800 text-white shadow-xl" : "text-slate-500 hover:text-slate-300"}`}
+                            >
+                                Solar
+                            </button>
+                            <button
+                                onClick={() => setCalendarType("lunar")}
+                                className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${calendarType === "lunar" ? "bg-slate-800 text-white shadow-xl" : "text-slate-500 hover:text-slate-300"}`}
+                            >
+                                Lunar
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {calendarType === "solar" ? (
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Birth Date & Time</label>
+                                    <input
+                                        type="datetime-local"
+                                        required
+                                        className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all font-medium"
+                                        value={formData.birthDateTime}
+                                        onChange={(e) => setFormData({ ...formData, birthDateTime: e.target.value })}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                    <div className="space-y-2 col-span-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Lunar Year</label>
+                                        <input
+                                            type="number"
+                                            className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium"
+                                            value={formData.birthYear}
+                                            onChange={(e) => setFormData({ ...formData, birthYear: Number(e.target.value) })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Month</label>
+                                        <select
+                                            className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium appearance-none"
+                                            value={formData.birthMonth}
+                                            onChange={(e) => setFormData({ ...formData, birthMonth: Number(e.target.value) })}
+                                        >
+                                            {Array.from({ length: 12 }, (_, i) => (
+                                                <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Day</label>
+                                        <input
+                                            type="number"
+                                            min={1}
+                                            max={30}
+                                            className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium"
+                                            value={formData.birthDay}
+                                            onChange={(e) => setFormData({ ...formData, birthDay: Number(e.target.value) })}
+                                        />
+                                    </div>
+                                    <div className="flex items-center space-x-3 px-1 pt-2">
+                                        <input
+                                            type="checkbox"
+                                            id="isLeap"
+                                            checked={formData.isLeap}
+                                            onChange={(e) => setFormData({ ...formData, isLeap: e.target.checked })}
+                                            className="w-5 h-5 bg-slate-950 border border-slate-800 rounded-md text-indigo-600 focus:ring-offset-0 focus:ring-indigo-500 appearance-none checked:bg-indigo-600 checked:border-indigo-600 relative after:content-['✓'] after:absolute after:hidden after:inset-0 after:text-center after:text-xs after:leading-5 checked:after:block"
+                                        />
+                                        <label htmlFor="isLeap" className="text-sm font-semibold text-slate-400">Leap Month</label>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Gender</label>
+                                    <select
+                                        className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium"
+                                        value={formData.gender}
+                                        onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
+                                    >
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Timezone</label>
+                                    <input
+                                        type="number"
+                                        className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium"
+                                        value={formData.tzOffsetMinutes}
+                                        onChange={(e) => setFormData({ ...formData, tzOffsetMinutes: Number(e.target.value) })}
+                                    />
+                                </div>
                             </div>
+
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-700">Month</label>
+                                <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Day Start Rule</label>
                                 <select
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                    value={formData.birthMonth}
-                                    onChange={(e) => setFormData({ ...formData, birthMonth: Number(e.target.value) })}
+                                    className="w-full bg-slate-950/50 border border-slate-800 px-5 py-4 rounded-2xl focus:outline-none focus:border-indigo-500/50 transition-all font-medium"
+                                    value={formData.dayStartHourLocal}
+                                    onChange={(e) => setFormData({ ...formData, dayStartHourLocal: Number(e.target.value) })}
                                 >
-                                    {Array.from({ length: 12 }, (_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
-                                    ))}
+                                    <option value={23}>23:00 (Late Zi)</option>
+                                    <option value={0}>00:00 (Standard)</option>
                                 </select>
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-700">Day</label>
-                                <input
-                                    type="number"
-                                    min={1}
-                                    max={30}
-                                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                    value={formData.birthDay}
-                                    onChange={(e) => setFormData({ ...formData, birthDay: Number(e.target.value) })}
-                                />
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <input
-                                    type="checkbox"
-                                    id="isLeap"
-                                    checked={formData.isLeap}
-                                    onChange={(e) => setFormData({ ...formData, isLeap: e.target.checked })}
-                                    className="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
-                                />
-                                <label htmlFor="isLeap" className="text-sm font-medium text-slate-700">Leap Month</label>
-                            </div>
-                        </div>
-                    )}
 
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-700">Gender</label>
-                        <select
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                            value={formData.gender}
-                            onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                        >
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">TZ Offset (mins)</label>
-                            <input
-                                type="number"
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                value={formData.tzOffsetMinutes}
-                                onChange={(e) => setFormData({ ...formData, tzOffsetMinutes: Number(e.target.value) })}
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700">Day Rollover</label>
-                            <select
-                                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                                value={formData.dayStartHourLocal}
-                                onChange={(e) => setFormData({ ...formData, dayStartHourLocal: Number(e.target.value) })}
+                            <button
+                                type="submit"
+                                className="w-full btn-premium py-5 mt-4 text-lg hover:scale-[1.02]"
                             >
-                                <option value={23}>23:00 (Zi-hour)</option>
-                                <option value={0}>00:00 (Midnight)</option>
-                            </select>
-                        </div>
+                                Generate Report
+                            </button>
+                        </form>
                     </div>
-
-                    <button
-                        type="submit"
-                        className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all text-lg"
-                    >
-                        Generate Report
-                    </button>
-                </form>
+                </div>
             </div>
         </main>
     );
