@@ -55,10 +55,10 @@ export default function ReportPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-950">
-                <div className="flex flex-col items-center space-y-4">
-                    <div className="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-                    <p className="text-indigo-400 font-bold tracking-widest uppercase text-xs animate-pulse">Analyzing Pillars...</p>
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+                <div className="flex flex-col items-center space-y-6">
+                    <div className="w-10 h-10 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
+                    <p className="text-slate-500 font-bold tracking-widest uppercase text-[10px] animate-pulse">Calculating Intelligence...</p>
                 </div>
             </div>
         );
@@ -66,18 +66,15 @@ export default function ReportPage() {
 
     if (error || !report) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-950 p-6">
-                <div className="glass-dark p-10 rounded-[2rem] text-center max-w-sm border border-red-500/20">
-                    <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span className="text-3xl">⚠️</span>
-                    </div>
-                    <h2 className="text-2xl font-black text-slate-50 mb-4 tracking-tight">Calculation Error</h2>
-                    <p className="text-slate-400 text-sm leading-relaxed mb-8">{error || "The engine could not process your request"}</p>
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] p-6">
+                <div className="bg-white p-12 rounded-[2.5rem] text-center max-w-sm border border-slate-200 shadow-sm">
+                    <h2 className="text-xl font-black text-slate-900 mb-2">Calculation Error</h2>
+                    <p className="text-slate-500 text-xs leading-relaxed mb-8">{error || "Unable to generate report"}</p>
                     <button
                         onClick={() => router.back()}
-                        className="w-full py-4 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all active:scale-95"
+                        className="w-full py-4 bg-slate-950 text-white rounded-xl font-bold hover:bg-slate-800 transition-all text-xs uppercase tracking-widest"
                     >
-                        Go Back
+                        Return Home
                     </button>
                 </div>
             </div>
@@ -87,114 +84,139 @@ export default function ReportPage() {
     const { bazi, elements, cards, dayun, notes } = report;
 
     return (
-        <main className="min-h-screen p-4 md:p-12 pb-24">
-            <div className="max-w-6xl mx-auto space-y-12">
-                {/* Navigation / Header */}
-                <nav className="flex items-center justify-between z-20">
-                    <button
-                        onClick={() => router.back()}
-                        className="group flex items-center space-x-2 text-slate-400 hover:text-white transition-all"
-                    >
-                        <span className="transition-transform group-hover:-translate-x-1">←</span>
-                        <span className="text-[10px] font-black uppercase tracking-widest">Back to Engine</span>
-                    </button>
-                    <div className="flex items-center space-x-4">
+        <main className="min-h-screen p-8 md:p-12 lg:p-16 bg-[#F8FAFC]">
+            <div className="max-w-7xl mx-auto space-y-16">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div className="space-y-4">
                         <button
-                            onClick={() => window.print()}
-                            className="px-4 py-2 glass rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all"
+                            onClick={() => router.back()}
+                            className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2 hover:text-slate-900 transition-colors"
                         >
-                            Export PDF
+                            ← Back to Intelligence Input
                         </button>
+                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-none">
+                            BaZi Decision <span className="text-[#C8A75B]">Report</span>
+                        </h1>
+                        <p className="text-slate-500 font-medium text-sm">
+                            Identity Analysis System • {new Date(searchParams.get("birthIsoUtc") || "").toLocaleDateString()}
+                        </p>
                     </div>
-                </nav>
+                </div>
 
-                <header className="space-y-4">
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tighter">Your <span className="text-gradient">Potential</span></h1>
-                    <p className="text-slate-500 font-medium tracking-tight">Based on birth date {new Date(searchParams.get("birthIsoUtc") || "").toLocaleDateString()}</p>
-                </header>
+                {/* SECTION A: Four Pillars */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    {[
+                        { label: "Year", value: bazi.pillars.year },
+                        { label: "Month", value: bazi.pillars.month },
+                        { label: "Day", value: bazi.pillars.day },
+                        { label: "Hour", value: bazi.pillars.hour },
+                    ].map((p, i) => (
+                        <div key={i} className="bg-white border border-slate-200/60 rounded-[2.5rem] p-8 shadow-sm">
+                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">{p.label} Pillar</div>
+                            <div className="text-5xl font-serif text-slate-900 mb-2">{p.value.zh}</div>
+                            <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic opacity-80">
+                                {p.value.heavenlyStemZh} · {p.value.earthlyBranchZh}
+                            </div>
+                        </div>
+                    ))}
+                </div>
 
                 <div className="grid lg:grid-cols-12 gap-8">
-                    {/* Main Content (Left) */}
-                    <div className="lg:col-span-8 space-y-8">
-                        {/* Four Pillars Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {[
-                                { label: "Year", value: bazi.pillars.year, icon: "🕰️" },
-                                { label: "Month", value: bazi.pillars.month, icon: "🗓️" },
-                                { label: "Day", value: bazi.pillars.day, icon: "☀️" },
-                                { label: "Hour", value: bazi.pillars.hour, icon: "⌛" },
-                            ].map((p, i) => (
-                                <div key={i} className="glass-dark p-6 rounded-3xl group hover:border-indigo-500/30 transition-all">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <span className="text-[9px] font-black text-slate-500 uppercase tracking-tighter">{p.label}</span>
-                                        <span className="opacity-40 grayscale group-hover:grayscale-0 transition-all">{p.icon}</span>
+                    {/* SECTION C & D: Main Content (Left) */}
+                    <div className="lg:col-span-8 space-y-12">
+                        {/* SECTION C: Interpretation Cards */}
+                        <div className="space-y-6">
+                            <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] pl-1">Strategic Insights</h2>
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {cards.map((card, i) => (
+                                    <div key={i} className="bg-white border border-slate-200 shadow-sm p-10 rounded-[2.5rem] flex flex-col h-full hover:shadow-md transition-shadow">
+                                        <div className="flex justify-between items-start mb-6">
+                                            <h3 className="text-lg font-bold text-slate-900">{card.title}</h3>
+                                            <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${getSeverityBadge(card.severity)}`}>
+                                                {card.severity}
+                                            </span>
+                                        </div>
+                                        <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-grow">{card.why}</p>
+                                        <div className="space-y-4">
+                                            <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Recommended Actions</div>
+                                            <ul className="space-y-3">
+                                                {card.whatToDo.map((todo, j) => (
+                                                    <li key={j} className="flex items-start space-x-3 text-xs text-slate-700 font-medium leading-tight">
+                                                        <span className="w-1 h-1 rounded-full bg-[#C8A75B] mt-1.5 shrink-0"></span>
+                                                        <span>{todo}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="flex flex-wrap gap-2 mt-10">
+                                            {card.tags.map((tag, j) => (
+                                                <span key={j} className="text-[9px] bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-bold">#{tag.toUpperCase()}</span>
+                                            ))}
+                                        </div>
                                     </div>
-                                    <div className="text-4xl font-serif text-white mb-1">{p.value.zh}</div>
-                                    <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">
-                                        {p.value.heavenlyStemZh} · {p.value.earthlyBranchZh}
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Interpretation Cards Grid */}
-                        <div className="grid md:grid-cols-2 gap-6">
-                            {cards.map((card, i) => (
-                                <div key={i} className={`glass-dark p-8 rounded-[2.5rem] flex flex-col h-full relative overflow-hidden group`}>
-                                    <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 ${getSeverityColor(card.severity)}`}></div>
-                                    <div className="flex justify-between items-start mb-6">
-                                        <h3 className="text-xl font-bold text-slate-100">{card.title}</h3>
-                                        <span className={`px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${getSeverityBadge(card.severity)}`}>
-                                            {card.severity}
-                                        </span>
-                                    </div>
-                                    <p className="text-slate-400 text-sm leading-relaxed mb-8 flex-grow">{card.why}</p>
-                                    <div className="space-y-4">
-                                        <h4 className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Actionable Strategy</h4>
-                                        <ul className="space-y-3">
-                                            {card.whatToDo.map((todo, j) => (
-                                                <li key={j} className="flex items-start space-x-3 text-xs text-slate-300 font-medium leading-tight">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1 shrink-0"></span>
-                                                    <span>{todo}</span>
-                                                </li>
+                        {/* SECTION D: Luck Cycle Timeline */}
+                        <div className="space-y-6">
+                            <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] pl-1">DaYun Luck Cycles</h2>
+                            <div className="bg-white border border-slate-200 shadow-sm rounded-[2.5rem] overflow-hidden">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left">
+                                        <thead className="bg-slate-50 text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                                            <tr>
+                                                <th className="px-10 py-5">#</th>
+                                                <th className="px-10 py-5">Pillar</th>
+                                                <th className="px-10 py-5">Age</th>
+                                                <th className="px-10 py-5 text-right w-64">Timeline Range</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-slate-100">
+                                            {dayun.map((d, i) => (
+                                                <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                                                    <td className="px-10 py-6 text-xs text-slate-400 font-black">{String(d.n).padStart(2, '0')}</td>
+                                                    <td className="px-10 py-6 text-3xl font-serif text-slate-900">{d.luckPillarZh}</td>
+                                                    <td className="px-10 py-6 text-sm font-black text-slate-700 tracking-tight">{d.ageRange}</td>
+                                                    <td className="px-10 py-6 text-[10px] text-slate-400 text-right font-medium italic opacity-70">
+                                                        {d.approxUtcRange}
+                                                    </td>
+                                                </tr>
                                             ))}
-                                        </ul>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 mt-8">
-                                        {card.tags.map((tag, j) => (
-                                            <span key={j} className="text-[9px] bg-slate-800/50 text-slate-500 px-3 py-1.5 rounded-full font-bold">#{tag.toUpperCase()}</span>
-                                        ))}
-                                    </div>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            ))}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Sidebar (Right) */}
+                    {/* SECTION B: Five Elements (Right Sidebar) */}
                     <div className="lg:col-span-4 space-y-8">
-                        {/* Elements Sidebar */}
-                        <div className="glass-dark p-8 rounded-[2.5rem] sticky top-4">
-                            <div className="flex justify-between items-end mb-10">
+                        <div className="bg-white border border-slate-200 shadow-sm p-10 rounded-[3rem] sticky top-8">
+                            <div className="flex justify-between items-end mb-12">
                                 <div>
-                                    <h2 className="text-2xl font-black text-white">Elements</h2>
-                                    <p className="text-slate-500 text-xs font-medium">Core score vector</p>
+                                    <h2 className="text-xl font-black text-slate-900">Five Elements</h2>
+                                    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-1">Energy Vector</p>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-[9px] text-slate-500 font-black uppercase tracking-tighter">Balance</div>
-                                    <div className="text-4xl font-black text-indigo-400 leading-none">{(elements.balanceIndex * 100).toFixed(0)}%</div>
+                                    <div className="text-[9px] text-slate-400 font-black uppercase tracking-widest mb-1">Balance</div>
+                                    <div className="px-3 py-1 bg-slate-900 text-white text-xs font-black rounded-lg leading-none">
+                                        {(elements.balanceIndex * 100).toFixed(0)}%
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-6">
+                            <div className="space-y-8">
                                 {Object.entries(elements.vector).map(([el, score]) => (
-                                    <div key={el} className="group">
-                                        <div className="flex justify-between text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">
+                                    <div key={el} className="space-y-3">
+                                        <div className="flex justify-between text-[11px] font-black text-slate-500 uppercase tracking-widest px-1">
                                             <span>{el}</span>
-                                            <span className="text-slate-200">{Number(score).toFixed(1)}</span>
+                                            <span className="text-slate-900">{Number(score).toFixed(1)}</span>
                                         </div>
-                                        <div className="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden p-[2px] border border-slate-800/50">
+                                        <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                                             <div
-                                                className={`h-full rounded-full transition-all duration-1000 ${getElementColor(el)} shadow-[0_0_15px_-3px_rgba(0,0,0,0.3)]`}
+                                                className={`h-full rounded-full transition-all duration-1000 bg-[#C8A75B]`}
                                                 style={{ width: `${Math.min(100, (Number(score) / 20) * 100)}%` }}
                                             ></div>
                                         </div>
@@ -202,61 +224,28 @@ export default function ReportPage() {
                                 ))}
                             </div>
 
-                            <div className="mt-12 pt-8 border-t border-slate-800/50">
-                                <p className="text-[10px] text-slate-500 font-semibold italic leading-relaxed">
-                                    "The Five Elements (Wu Xing) are the governing forces of all material existence. Harmony is found in the balance of interactions."
+                            <div className="mt-16 pt-10 border-t border-slate-100">
+                                <p className="text-[10px] text-slate-400 font-bold italic leading-relaxed text-center">
+                                    "Clarity results from the balanced interaction of elemental forces."
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* DaYun Timeline Full Width */}
-                <section className="glass-dark rounded-[2.5rem] overflow-hidden border border-slate-800/30">
-                    <div className="p-8 border-b border-slate-800/50 flex justify-between items-center">
-                        <h2 className="text-2xl font-black text-white">DaYun Timeline</h2>
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">10-Year Luck Cycle</span>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left">
-                            <thead className="bg-slate-900/50 text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-800/50">
-                                <tr>
-                                    <th className="px-8 py-5">Index</th>
-                                    <th className="px-8 py-5">Luck Pillar</th>
-                                    <th className="px-8 py-5">Age Interval</th>
-                                    <th className="px-8 py-5 text-right w-64">Approximate Timeline</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-800/50">
-                                {dayun.map((d, i) => (
-                                    <tr key={i} className="hover:bg-white/5 transition-colors group">
-                                        <td className="px-8 py-6 text-xs text-slate-500 font-black">{String(d.n).padStart(2, '0')}</td>
-                                        <td className="px-8 py-6 text-3xl font-serif text-white group-hover:text-indigo-400 transition-colors">{d.luckPillarZh}</td>
-                                        <td className="px-8 py-6 text-sm font-black text-slate-300 tracking-tighter">{d.ageRange}</td>
-                                        <td className="px-8 py-6 text-[10px] text-slate-500 text-right font-medium tracking-tight italic opacity-60">
-                                            {d.approxUtcRange}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                {/* Notes Footer */}
-                <footer className="pt-12 border-t border-slate-800/30">
-                    <div className="grid md:grid-cols-2 gap-8 items-start">
-                        <div className="space-y-4">
-                            <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Methodology Notes</div>
-                            <div className="space-y-2">
-                                {notes.map((note, i) => (
-                                    <p key={i} className="text-xs text-slate-500 italic leading-relaxed">* {note}</p>
-                                ))}
-                            </div>
+                {/* SECTION E: Notes Footer */}
+                <footer className="pt-12 border-t border-slate-200">
+                    <div className="bg-slate-100 p-10 rounded-[2.5rem] border border-slate-200/60 max-w-3xl">
+                        <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Methodology & Intelligence</div>
+                        <div className="space-y-3 opacity-70">
+                            {notes.map((note, i) => (
+                                <p key={i} className="text-[11px] text-slate-600 font-medium leading-relaxed italic">• {note}</p>
+                            ))}
                         </div>
-                        <div className="text-right hidden md:block opacity-30">
-                            <span className="text-6xl font-black tracking-tighter text-slate-800">MVX V1.0</span>
-                        </div>
+                    </div>
+                    <div className="mt-16 flex justify-between items-center opacity-30 grayscale">
+                        <span className="text-3xl font-black tracking-tighter text-slate-900">MVX V1.1</span>
+                        <span className="text-[9px] font-black uppercase tracking-[0.4em]">Confidential Destiny Intelligence</span>
                     </div>
                 </footer>
             </div>
