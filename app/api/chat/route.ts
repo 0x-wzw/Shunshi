@@ -21,7 +21,17 @@ export async function POST(req: NextRequest) {
         // MOCK RESPONSE for MVP
         let responseText = "";
 
-        if (message.toLowerCase().includes("invest") || message.toLowerCase().includes("buy")) {
+        const clarificationMatch = message.match(/clarification on the "(.*)" insight/i);
+        if (clarificationMatch) {
+            const insightTitle = clarificationMatch[1];
+            const card = context?.cards?.find((c: any) => c.title.toLowerCase() === insightTitle.toLowerCase());
+
+            if (card) {
+                responseText = `You're asking for more depth on the "${card.title}" insight. This aspect of your BaZi report highlights "${card.why}". From a reflection standpoint, consider how this specifically manifests when you face challenges. For example, your recommended action "${card.whatToDo[0]}" is a way to ground this energy. How does that feel as a practical step for you right now?`;
+            } else {
+                responseText = `I see you're interested in that specific insight. While I delve into the details, remember that these interpretations are mirrors of your elemental balance. How does the core energy of that observation resonate with your current situation?`;
+            }
+        } else if (message.toLowerCase().includes("invest") || message.toLowerCase().includes("buy")) {
             responseText = "Looking at your current luck pillar and the elemental balance for this hour, there is a strong presence of 'Wealth' elements. However, rather than directing YOUR investment choices, consider how your current state of confidence might be influencing your risk appetite. How does this period of 'Direct Wealth' energy reflect in your current financial planning?";
         } else if (message.toLowerCase().includes("work") || message.toLowerCase().includes("career")) {
             responseText = "Your BaZi pillars suggest a high concentration of 'Officer' energy today, which often relates to structure and authority. Instead of telling you what career move to make, I invite you to reflect on whether you feel more inclined towards leadership or execution right now. How does the 'Metal' energy in your Hour pillar mirror your current workflow?";
