@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { InterpretationReport } from "@/lib/interpretation/types";
+import ChatInterface from "@/components/ChatInterface";
 
 export default function ReportPage() {
     const searchParams = useSearchParams();
@@ -259,6 +260,7 @@ export default function ReportPage() {
                     </div>
                 </footer>
             </div>
+            <ChatInterface report={report} />
         </main>
     );
 }
