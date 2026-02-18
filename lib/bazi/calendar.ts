@@ -1,3 +1,5 @@
+import { Solar, Lunar } from "lunar-javascript";
+
 export interface LunarDate {
     year: number;
     month: number;
@@ -6,25 +8,23 @@ export interface LunarDate {
 }
 
 /**
- * Simplified Solar-Lunar conversion for MVP.
- * In a production app, use a library like 'lunar-javascript'.
+ * Authentic Solar-Lunar conversion using lunar-javascript.
  */
 export function lunarToSolar(lunar: LunarDate): Date {
-    // Mock conversion: adds ~30 days to the lunar date to get an approximate solar date
-    // This is purely for UI demonstration in this MVP.
-    const date = new Date(lunar.year, lunar.month - 1, lunar.day);
-    date.setDate(date.getDate() + 30);
-    return date;
+    // In lunar-javascript, a negative month indicates a leap month
+    const l = Lunar.fromYmd(lunar.year, lunar.isLeap ? -lunar.month : lunar.month, lunar.day);
+    const s = l.getSolar();
+    return new Date(s.getYear(), s.getMonth() - 1, s.getDay());
 }
 
 export function solarToLunar(solar: Date): LunarDate {
-    // Mock conversion: subtracts ~30 days
-    const date = new Date(solar);
-    date.setDate(date.getDate() - 30);
+    const s = Solar.fromYmd(solar.getFullYear(), solar.getMonth() + 1, solar.getDate());
+    const l = s.getLunar();
+    const month = l.getMonth();
     return {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate(),
-        isLeap: false,
+        year: l.getYear(),
+        month: Math.abs(month),
+        day: l.getDay(),
+        isLeap: month < 0,
     };
 }

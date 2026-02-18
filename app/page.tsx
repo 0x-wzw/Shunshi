@@ -13,7 +13,8 @@ export default function Home() {
         dayStartHourLocal: 23,
     });
 
-    const lunarPreview = formData.birthDateTime ? solarToLunar(new Date(formData.birthDateTime)) : null;
+    const birthDateObj = formData.birthDateTime ? new Date(formData.birthDateTime) : null;
+    const lunarPreview = birthDateObj && !isNaN(birthDateObj.getTime()) ? solarToLunar(birthDateObj) : null;
 
     const handleGenerate = () => {
         if (!formData.birthDateTime) return alert("Please select birth date and time");

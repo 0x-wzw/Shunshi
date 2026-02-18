@@ -89,6 +89,9 @@ export default function ReportPage() {
             msg: `I'd like more clarification on the "${title}" insight. How should I interpret this in my current life stage?`,
             ts: Date.now()
         });
+        setTimeout(() => {
+            document.getElementById('ai-chat-section')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
     };
 
     return (
@@ -176,35 +179,10 @@ export default function ReportPage() {
                             </div>
                         </div>
 
-                        {/* SECTION D: Luck Cycle Timeline */}
+                        {/* SECTION F: AI Reflection (Inline) */}
                         <div className="space-y-6">
-                            <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] pl-1">DaYun Luck Cycles</h2>
-                            <div className="bg-white border border-slate-200 shadow-sm rounded-[2.5rem] overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-left">
-                                        <thead className="bg-slate-50 text-[9px] font-black text-slate-500 uppercase tracking-widest">
-                                            <tr>
-                                                <th className="px-10 py-5">#</th>
-                                                <th className="px-10 py-5">Pillar</th>
-                                                <th className="px-10 py-5">Age</th>
-                                                <th className="px-10 py-5 text-right w-64">Timeline Range</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                            {dayun.map((d, i) => (
-                                                <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                                                    <td className="px-10 py-6 text-xs text-slate-400 font-black">{String(d.n).padStart(2, '0')}</td>
-                                                    <td className="px-10 py-6 text-3xl font-serif text-slate-900">{d.luckPillarZh}</td>
-                                                    <td className="px-10 py-6 text-sm font-black text-slate-700 tracking-tight">{d.ageRange}</td>
-                                                    <td className="px-10 py-6 text-[10px] text-slate-400 text-right font-medium italic opacity-70">
-                                                        {d.approxUtcRange}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <h2 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] pl-1">AI Reflection Assistant</h2>
+                            <ChatInterface report={report} externalTrigger={chatTrigger} />
                         </div>
                     </div>
 
@@ -266,7 +244,6 @@ export default function ReportPage() {
                     </div>
                 </footer>
             </div>
-            <ChatInterface report={report} externalTrigger={chatTrigger} />
         </main>
     );
 }

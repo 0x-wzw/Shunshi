@@ -8,11 +8,12 @@ A minimal, premium SaaS dashboard designed to bring clarity and authentic BaZi i
 ## ✨ Core Features
 
 -   **Precision Identity Mapping**: Full Four Pillars (Year, Month, Day, Hour) breakdown with authentic Chinese characters and Pinyin labels.
+-   **Authentic Calendar Conversion**: Real Solar and Lunar mapping powered by `lunar-javascript`, supporting leap months and historical precision.
+-   **Refined Input UX**: Optimized Gregorian-only input with instant Lunar conversion feedback and GMT-standardized timezone selection.
 -   **Elemental Intelligence**: Real-time scoring of Five Elements (Wood, Fire, Earth, Metal, Water) with a centralized "Balance Index."
 -   **Strategic Insight Dashboard**: Data-driven cards providing the "What, Why, and Action" for your current energy profile.
--   **DaYun Luck Cycles**: A high-precision timeline of long-term life stages and elemental shifts.
--   **Reflection Assistant (AI)**: A non-directive AI Q&A interface for deep mirroring and clarifying specific insights.
--   **Bilingual Precision**: Supports both Solar (Gregorian) and Lunar calendar inputs with seamless conversion logic.
+-   **Reflection Assistant (AI)**: An embedded, inline AI Reflection Assistant that provides non-directive mirroring and context-aware guidance.
+-   **Deep Clarification**: One-click "Clarify with AI" triggers that deep-link from specific insights directly to the reflection assistant.
 
 ## 🎨 Design Philosophy (UX/UI)
 
@@ -20,6 +21,7 @@ The platform adheres to a **"Notion × Stripe"** design framework:
 -   **Minimalism**: Neutral light palette (`#F8FAFC`) with white cards and soft shadows.
 -   **Clarity**: Generous spacing and refined typography (Inter) for a calm reading experience.
 -   **Trust**: Muted gold (`#C8A75B`) accents used strategically for key data visualizations.
+-   **Immersion**: A dashboard-first layout where AI intelligence is an integral, inline part of the user journey.
 
 ## 🛠 Tech Stack
 
