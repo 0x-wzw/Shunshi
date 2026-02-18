@@ -2,43 +2,25 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { lunarToSolar } from "@/lib/bazi/calendar";
+import { lunarToSolar, solarToLunar } from "@/lib/bazi/calendar";
 
 export default function Home() {
     const router = useRouter();
-    const [calendarType, setCalendarType] = useState<"solar" | "lunar">("solar");
     const [formData, setFormData] = useState({
         birthDateTime: "",
-        birthYear: 1990,
-        birthMonth: 1,
-        birthDay: 1,
-        birthHour: 0,
-        isLeap: false,
         gender: "male",
         tzOffsetMinutes: 480,
         dayStartHourLocal: 23,
     });
 
-    const handleGenerate = () => {
-        let birthIsoUtc = "";
+    const lunarPreview = formData.birthDateTime ? solarToLunar(new Date(formData.birthDateTime)) : null;
 
-        if (calendarType === "solar") {
-            if (!formData.birthDateTime) return alert("Please select birth date and time");
-            const localDate = new Date(formData.birthDateTime);
-            const utcDate = new Date(localDate.getTime() - (formData.tzOffsetMinutes * 60000));
-            birthIsoUtc = utcDate.toISOString();
-        } else {
-            const solarDate = lunarToSolar(
-                formData.birthYear,
-                formData.birthMonth,
-                formData.birthDay,
-                formData.isLeap
-            );
-            const compositeDate = new Date(solarDate);
-            compositeDate.setHours(formData.birthHour);
-            const utcDate = new Date(compositeDate.getTime() - (formData.tzOffsetMinutes * 60000));
-            birthIsoUtc = utcDate.toISOString();
-        }
+    const handleGenerate = () => {
+        if (!formData.birthDateTime) return alert("Please select birth date and time");
+
+        const localDate = new Date(formData.birthDateTime);
+        const utcDate = new Date(localDate.getTime() - (formData.tzOffsetMinutes * 60000));
+        const birthIsoUtc = utcDate.toISOString();
 
         const params = new URLSearchParams({
             birthIsoUtc,
@@ -50,6 +32,34 @@ export default function Home() {
         router.push(`/report?${params.toString()}`);
     };
 
+    const timezoneOptions = [
+        { label: "GMT -12:00", value: -720 },
+        { label: "GMT -11:00", value: -660 },
+        { label: "GMT -10:00", value: -600 },
+        { label: "GMT -09:00", value: -540 },
+        { label: "GMT -08:00", value: -480 },
+        { label: "GMT -07:00", value: -420 },
+        { label: "GMT -06:00", value: -360 },
+        { label: "GMT -05:00", value: -300 },
+        { label: "GMT -04:00", value: -240 },
+        { label: "GMT -03:00", value: -180 },
+        { label: "GMT -02:00", value: -120 },
+        { label: "GMT -01:00", value: -60 },
+        { label: "GMT +00:00", value: 0 },
+        { label: "GMT +01:00", value: 60 },
+        { label: "GMT +02:00", value: 120 },
+        { label: "GMT +03:00", value: 180 },
+        { label: "GMT +04:00", value: 240 },
+        { label: "GMT +05:00", value: 300 },
+        { label: "GMT +06:00", value: 360 },
+        { label: "GMT +07:00", value: 420 },
+        { label: "GMT +08:00", value: 480 },
+        { label: "GMT +09:00", value: 540 },
+        { label: "GMT +10:00", value: 600 },
+        { label: "GMT +11:00", value: 660 },
+        { label: "GMT +12:00", value: 720 },
+    ];
+
     return (
         <main className="min-h-screen flex items-center justify-center p-6 bg-[#F8FAFC]">
             <div className="max-w-xl w-full">
@@ -59,90 +69,34 @@ export default function Home() {
                             Generate Your Destiny Report
                         </h1>
                         <p className="text-slate-500 font-medium text-sm tracking-tight">
-                            Four Pillars • Five Elements • Life Cycles
+                            Enter Gregorian Birth Data • Instant Lunar Conversion
                         </p>
                     </div>
 
                     <div className="p-10 md:p-14 space-y-8">
-                        {/* Calendar Toggle */}
-                        <div className="flex p-1 bg-slate-100 rounded-2xl">
-                            <button
-                                onClick={() => setCalendarType("solar")}
-                                className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${calendarType === "solar" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                            >
-                                Solar
-                            </button>
-                            <button
-                                onClick={() => setCalendarType("lunar")}
-                                className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${calendarType === "lunar" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
-                                    }`}
-                            >
-                                Lunar
-                            </button>
-                        </div>
-
                         <div className="space-y-6">
-                            {calendarType === "solar" ? (
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Birth Date & Time</label>
-                                    <input
-                                        type="datetime-local"
-                                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                        value={formData.birthDateTime}
-                                        onChange={(e) => setFormData({ ...formData, birthDateTime: e.target.value })}
-                                    />
-                                </div>
-                            ) : (
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Year</label>
-                                            <input
-                                                type="number"
-                                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                                value={formData.birthYear}
-                                                onChange={(e) => setFormData({ ...formData, birthYear: parseInt(e.target.value) })}
-                                            />
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Birth Date & Time (Gregorian)</label>
+                                <input
+                                    type="datetime-local"
+                                    className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
+                                    value={formData.birthDateTime}
+                                    onChange={(e) => setFormData({ ...formData, birthDateTime: e.target.value })}
+                                />
+                                {lunarPreview && (
+                                    <div className="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between">
+                                        <div className="space-y-1">
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Lunar Equivalence</p>
+                                            <p className="text-xs font-bold text-slate-700">
+                                                Year {lunarPreview.year} • Month {lunarPreview.month} • Day {lunarPreview.day}
+                                            </p>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Month</label>
-                                            <input
-                                                type="number"
-                                                max={12}
-                                                min={1}
-                                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                                value={formData.birthMonth}
-                                                onChange={(e) => setFormData({ ...formData, birthMonth: parseInt(e.target.value) })}
-                                            />
+                                        <div className="px-3 py-1 bg-white rounded-lg border border-slate-100 shadow-sm">
+                                            <span className="text-[10px] font-bold text-[#C8A75B]">CONVERTED</span>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Day</label>
-                                            <input
-                                                type="number"
-                                                max={31}
-                                                min={1}
-                                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                                value={formData.birthDay}
-                                                onChange={(e) => setFormData({ ...formData, birthDay: parseInt(e.target.value) })}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Hour (0-23)</label>
-                                            <input
-                                                type="number"
-                                                max={23}
-                                                min={0}
-                                                className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                                value={formData.birthHour}
-                                                onChange={(e) => setFormData({ ...formData, birthHour: parseInt(e.target.value) })}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
 
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-2">
@@ -157,14 +111,16 @@ export default function Home() {
                                     </select>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Timezone</label>
-                                    <input
-                                        type="number"
-                                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium"
-                                        value={formData.tzOffsetMinutes / 60}
-                                        onChange={(e) => setFormData({ ...formData, tzOffsetMinutes: parseInt(e.target.value) * 60 })}
-                                        placeholder="+08:00"
-                                    />
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Timezone (GMT)</label>
+                                    <select
+                                        className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all font-medium appearance-none cursor-pointer"
+                                        value={formData.tzOffsetMinutes}
+                                        onChange={(e) => setFormData({ ...formData, tzOffsetMinutes: parseInt(e.target.value) })}
+                                    >
+                                        {timezoneOptions.map(opt => (
+                                            <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
 
