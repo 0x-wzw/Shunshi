@@ -81,7 +81,16 @@ export default function ReportPage() {
         );
     }
 
+    const [chatTrigger, setChatTrigger] = useState<{ msg: string; ts: number } | undefined>(undefined);
+
     const { bazi, elements, cards, dayun, notes } = report;
+
+    const handleClarify = (title: string) => {
+        setChatTrigger({
+            msg: `I'd like more clarification on the "${title}" insight. How should I interpret this in my current life stage?`,
+            ts: Date.now()
+        });
+    };
 
     return (
         <main className="min-h-screen p-8 md:p-12 lg:p-16 bg-[#F8FAFC]">
@@ -149,10 +158,19 @@ export default function ReportPage() {
                                                 ))}
                                             </ul>
                                         </div>
-                                        <div className="flex flex-wrap gap-2 mt-10">
-                                            {card.tags.map((tag, j) => (
-                                                <span key={j} className="text-[9px] bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-bold">#{tag.toUpperCase()}</span>
-                                            ))}
+                                        <div className="mt-10 pt-6 border-t border-slate-50 flex items-center justify-between">
+                                            <div className="flex flex-wrap gap-2">
+                                                {card.tags.map((tag, j) => (
+                                                    <span key={j} className="text-[9px] bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-bold">#{tag.toUpperCase()}</span>
+                                                ))}
+                                            </div>
+                                            <button
+                                                onClick={() => handleClarify(card.title)}
+                                                className="text-[10px] font-bold text-[#C8A75B] hover:text-slate-900 transition-colors flex items-center gap-1.5 uppercase tracking-widest"
+                                            >
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#C8A75B]"></span>
+                                                Clarify with AI
+                                            </button>
                                         </div>
                                     </div>
                                 ))}
@@ -249,7 +267,7 @@ export default function ReportPage() {
                     </div>
                 </footer>
             </div>
-            <ChatInterface report={report} />
+            <ChatInterface report={report} externalTrigger={chatTrigger} />
         </main>
     );
 }

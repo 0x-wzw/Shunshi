@@ -8,7 +8,7 @@ interface Message {
     content: string;
 }
 
-export default function ChatInterface({ report }: { report: InterpretationReport }) {
+export default function ChatInterface({ report, externalTrigger }: { report: InterpretationReport; externalTrigger?: { msg: string; ts: number } }) {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         { role: "assistant", content: "Hello! I am your Reflection Assistant. How can I help you mirror your BaZi insights in your daily life today?" }
@@ -16,6 +16,15 @@ export default function ChatInterface({ report }: { report: InterpretationReport
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    // Handle external trigger
+    useEffect(() => {
+        if (externalTrigger) {
+            setIsOpen(true);
+            setMessages(prev => [...prev, { role: "user", content: externalTrigger.msg }]);
+            processMessage(externalTrigger.msg);
+        }
+    }, [externalTrigger]);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -25,20 +34,13 @@ export default function ChatInterface({ report }: { report: InterpretationReport
         scrollToBottom();
     }, [messages]);
 
-    const handleSend = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!input.trim() || isLoading) return;
-
-        const userMsg = input.trim();
-        setInput("");
-        setMessages(prev => [...prev, { role: "user", content: userMsg }]);
+    const processMessage = async (msg: string) => {
         setIsLoading(true);
-
         try {
             const response = await fetch("/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMsg, context: report }),
+                body: JSON.stringify({ message: msg, context: report }),
             });
 
             const data = await response.json();
@@ -50,6 +52,16 @@ export default function ChatInterface({ report }: { report: InterpretationReport
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleSend = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isLoading) return;
+
+        const userMsg = input.trim();
+        setInput("");
+        setMessages(prev => [...prev, { role: "user", content: userMsg }]);
+        processMessage(userMsg);
     };
 
     return (
@@ -74,8 +86,8 @@ export default function ChatInterface({ report }: { report: InterpretationReport
                         {messages.map((m, i) => (
                             <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                                 <div className={`max-w-[85%] p-5 rounded-[1.5rem] text-[11px] font-medium leading-relaxed shadow-sm ${m.role === "user"
-                                        ? "bg-slate-900 text-white rounded-tr-none"
-                                        : "bg-white text-slate-600 rounded-tl-none border border-slate-100"
+                                    ? "bg-slate-900 text-white rounded-tr-none"
+                                    : "bg-white text-slate-600 rounded-tl-none border border-slate-100"
                                     }`}>
                                     {m.content}
                                 </div>
