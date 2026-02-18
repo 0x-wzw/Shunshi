@@ -11,6 +11,7 @@ export default function ReportPage() {
     const [report, setReport] = useState<InterpretationReport | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [chatTrigger, setChatTrigger] = useState<{ msg: string; ts: number } | undefined>(undefined);
 
     useEffect(() => {
         const fetchReport = async () => {
@@ -80,8 +81,6 @@ export default function ReportPage() {
             </div>
         );
     }
-
-    const [chatTrigger, setChatTrigger] = useState<{ msg: string; ts: number } | undefined>(undefined);
 
     const { bazi, elements, cards, dayun, notes } = report;
 
