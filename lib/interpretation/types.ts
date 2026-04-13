@@ -17,13 +17,70 @@ export interface LuckPillar {
   approxUtcRange: string;
 }
 
+export interface ElementRatios {
+    wood: number;
+    fire: number;
+    earth: number;
+    metal: number;
+    water: number;
+}
+
+export interface SolarTerms {
+    current: string;
+    next: string;
+    nextDate: string;
+}
+
+export interface DayMasterInfo {
+    stem: string;
+    element: string;
+    yinYang: string;
+    pinyin: string;
+}
+
+export interface PillarDetail {
+    zh: string;
+    pinyin: string;
+    heavenlyStemZh: string;
+    heavenlyStemPinyin: string;
+    earthlyBranchZh: string;
+    earthlyBranchPinyin: string;
+    element: string;
+    hiddenStems: {
+        zh: string;
+        pinyin: string;
+        elements: { element: string; intensity: string }[];
+    };
+}
+
+export interface ElementsInfo {
+    scores: ElementVector;
+}
+
 export interface InterpretationReport {
-  bazi: any; // Using any for core response for flexibility
-  elements: {
-    vector: ElementVector;
-    balanceIndex: number;
-  };
-  cards: InterpretationCard[];
-  dayun: LuckPillar[];
-  notes: string[];
+    bazi: {
+        pillars: {
+            year: PillarDetail;
+            month: PillarDetail;
+            day: PillarDetail;
+            hour: PillarDetail;
+        };
+        dayMaster: DayMasterInfo;
+        elements: ElementsInfo;
+        tenGods: Record<string, string>;
+        solarTerms: SolarTerms;
+    };
+    elements: {
+        vector: ElementVector;
+        balanceIndex: number;
+        ratios?: ElementRatios;
+    };
+    mentalModels?: {
+        primary: string[];
+        frameworks: string[];
+        biases: string[];
+    };
+    cards: InterpretationCard[];
+    dayun: LuckPillar[];
+    notes: string[];
 }
