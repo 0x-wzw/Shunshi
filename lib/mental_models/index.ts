@@ -42,31 +42,3 @@ export type {
     DecisionFramework,
     CognitiveBias,
 } from "./frameworks";
-
-// ═══════════════════════════════════════════════════════════════════════════
-// STANDALONE KOL INSIGHTS MODULE
-// Not linked to Bazi - separate mental models from ERC-8004 ecosystem
-// ═══════════════════════════════════════════════════════════════════════════
-
-export {
-    MarcoDeRossi,
-    DavideCrapis,
-    ERC8004Org,
-    MichaelKantor,
-    ALL_KOLS,
-    getAllKOLs,
-    getKOLByHandle,
-    getKOLByName,
-    getAllMentalModelsFromKOLs,
-    searchKOLInsights,
-    getInsightsByDomain,
-    convertKOLToMentalModels,
-} from "./kol_insights";
-
-export type {
-    KOL,
-    KOLMentalModel,
-    Principle,
-    ContentStyle,
-    ERCKOLInsight,
-} from "./kol_insights";
