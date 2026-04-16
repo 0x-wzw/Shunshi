@@ -83,26 +83,54 @@ Kairos/
 ├── app/                    # Next.js 15 App Router
 │   ├── api/               # API routes for Bazi calculation
 │   ├── dashboard/         # Main decision interface
+│   ├── report/            # Bazi report page
 │   └── layout.tsx         # Root layout with providers
 ├── components/
-│   ├── bazi/              # Four Pillars visualization
-│   ├── charts/            # Elemental balance displays
-│   └── mental-models/     # Decision framework components
+│   └── ChatInterface.tsx  # Main chat UI
 ├── lib/
-│   ├── bazi/              # Core calculation engine
-│   │   ├── calculator.ts  # Four Pillars mathematics
-│   │   ├── hidden-stems.ts
-│   │   ├── luck-pillars.ts
-│   │   └── ten-gods.ts
-│   ├── mental_models/     # Cognitive frameworks
-│   │   ├── frameworks.ts  # Elemental mental models
-│   │   ├── utils.ts       # Utility functions
-│   │   └── index.ts       # Module exports
-│   └── utils/
-├── types/
-│   └── bazi.ts            # TypeScript definitions
+│   ├── bazi/              # TypeScript Bazi types & mocks
+│   │   ├── bazi_core.ts
+│   │   ├── calendar.ts
+│   │   └── element_scoring.ts
+│   ├── celestial/         # Ephemeris & time
+│   │   ├── ephemeris.ts
+│   │   └── time.ts
+│   ├── cycles/            # Da Yun (大运) calculation
+│   │   └── dayun.ts
+│   ├── interpretation/    # Report generation
+│   │   ├── rules.ts
+│   │   ├── types.ts
+│   │   ├── scoring.ts
+│   │   └── generate.ts
+│   └── mental_models/    # Cognitive frameworks
+│       ├── frameworks.ts
+│       ├── kol_insights.ts
+│       ├── utils.ts
+│       └── index.ts
+├── engine/                # 🆕 Python Celestial Computation Backend
+│   ├── celestial_computations/  # Core engine package
+│   │   ├── aether.py      # Constants: Stems, Branches, Phases
+│   │   ├── logos.py        # Algorithms: BaziCalculator, SolarTerms
+│   │   ├── harmon.py      # Relations: Ten Gods, Hexagrams
+│   │   └── praxis.py      # Interface: CelestialAgent API
+│   ├── scripts/           # Bi-hourly report scripts
+│   ├── skills/            # Hermes agent skill documents
+│   └── pyproject.toml
 └── public/
 ```
+
+### Engine (Python Backend)
+
+The `engine/` directory contains the production-grade Python computation backend:
+
+| Module | Purpose |
+|--------|---------|
+| `aether.py` | Cosmological constants — Stems (天干), Branches (地支), Five Phases (五行) |
+| `logos.py` | Algorithmic engine — JDN day pillar, 五虎遁, 五鼠遁, solar terms |
+| `harmon.py` | Relationship synthesis — Ten Gods (十神), branch interactions |
+| `praxis.py` | Operational interface — CLI, API, formatting |
+
+See [`engine/README.md`](engine/README.md) for Python backend setup.
 
 ---
 
@@ -205,13 +233,14 @@ The goal is **temporal calibration** — understanding when conditions favor:
 
 ## Related Projects
 
-- **[Celestial Computations](https://github.com/hermes/skills)** — Standalone Bazi calculation library
-- **[Bazi Decision Making](https://github.com/hermes/skills)** — Metaphysical counterweight to pure computational decisions
+- **[Astrum Harmonis Celestialis](./engine/)** — Python computation engine (this repo's `engine/` directory)
+- **[Celestial Computations Skill](./engine/SKILL.md)** — Hermes agent skill for autonomous Bazi calculations
+- **[Bazi Decision Making](./engine/skills/bazi-decision-making/)** — Metaphysical counterweight to pure computational decisions
 
 ---
 
 ## License
 
-MIT © 2025 0x-wzw
+MIT © 2025–2026 0x-wzw
 
 *Powered by BaZi Decision Intelligence • Authentic 八字 Calculation • Temporal Calibration*

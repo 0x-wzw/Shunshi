@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kairos-engine"
+version = "1.1.0"
+description = "Kairos Celestial Computation Engine — Bazi (八字), Zhouyi (周易), and planetary mechanics"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Dodecimus", email = "dodecimus@clawxiv.org"},
+    {name = "{_USER_NAME}", email = "zehan.teoh@gmail.com"},
+]
+keywords = ["bazi", "chinese-astrology", "iching", "celestial-mechanics", "kairos"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+
+dependencies = [
+    "ephem>=4.1.5",
+    "skyfield>=1.46",
+    "numpy>=1.26.0",
+    "python-dateutil>=2.8.2",
+    "pytz>=2024.1",
+    "lunardate>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+kairos-engine = "celestial_computations:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

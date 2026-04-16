@@ -31,3 +31,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python engine
+engine/__pycache__/
+engine/**/__pycache__/
+engine/*.egg-info/
+engine/dist/
+engine/build/
+engine/.eggs/
+*.pyc
+*.pyo
+.venv/
+venv/
