@@ -1,0 +1,171 @@
+[
+  {
+    "sha": "b8e2f8e6043874b0c28786accdc2d79838cbcf6e",
+    "node_id": "C_kwDORSub5toAKGI4ZTJmOGU2MDQzODc0YjBjMjg3ODZhY2NkYzJkNzk4MzhjYmNmNmU",
+    "commit": {
+      "author": {
+        "name": "{_USER_NAME}",
+        "email": "zehan.teoh@gmail.com",
+        "date": "2026-04-13T10:17:23Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-04-13T10:17:23Z"
+      },
+      "message": "Merge pull request #27 from 0x-wzw/bazi-v2-update",
+      "tree": {
+        "sha": "2d10187b5fcae2775485ce6523e26d7f4e57e21d",
+        "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/git/trees/2d10187b5fcae2775485ce6523e26d7f4e57e21d"
+      },
+      "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/git/commits/b8e2f8e6043874b0c28786accdc2d79838cbcf6e",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJp3MKzCRC1aQ7uu5UhlAAAgxIQABXvZ7RYR/JLHqc1kWDnOPAG\nHWWOVhy4KjkPGkE4RsbY+pCIqi6J9ytz0CT49uWgwCdXYJSMJsBvH2vPBj7MAuuK\nNK5TkTOJM9vmyi/q881QSjHXg+MT0L9MOeUyeERY0btDI7BgOlDsvSjVd88LjLL6\nB93rl4h07qgqwjJ5bJCyLhdA5JfbRbpi7xdnn99Y8ewkOTwVOfUwJCRTHeEdldD0\nH4GSna802ilNli7s8uLzUxPkrLfyMjcz/c2JdmJTd9Mea2DqoRTecp64vDaZOwQq\nDHF5HOiObyB8w8LkizRELc/W8/ecQ1HeT5ohXk83ONKUYDVxK/wibWDvuD8Pxhnw\n2meGko/hcytQLji2tH323Zt4zlvAUfNDjYyAHh6oz82RQc5RlRZt9sP4m8XN0lQ6\nA2PCzPoNUvykGTzCykDYrYc/6uikfBpWeYsUWPY1HH8UCmcqH4t143ZemK2IZbBB\nz2eAsvRlRdbt95spsqv9XpP/8C/3u4+oJhhPNZkyfUZvimLXBBkF4E7r2ELzIaul\n551VsHgtTn8crpQmJi/Hlmri8KbnoWJ91kScaH3UUBfIAEHs8gGpn2QvesJDCx5u\niegKuKhRFzgNdxCpXKMnlWIJtH7T9UlFD1uRYYKYuXSJhPeuCSqz4eH+S6tuZvJA\nOR991/B0s5qiI41KVMqG\n=7EFM\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 2d10187b5fcae2775485ce6523e26d7f4e57e21d\nparent 4a5c773491a6b764089b5556522f43a8fd27c348\nparent db1767cd83ddf85e8f3d63884c97cac609981c88\nauthor {_USER_NAME} <zehan.teoh@gmail.com> 1776075443 +0800\ncommitter GitHub <noreply@github.com> 1776075443 +0800\n\nMerge pull request #27 from 0x-wzw/bazi-v2-update",
+        "verified_at": "2026-04-13T10:17:24Z"
+      }
+    },
+    "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/b8e2f8e6043874b0c28786accdc2d79838cbcf6e",
+    "html_url": "https://github.com/0x-wzw/Bazi_Daily_Decision_Tree/commit/b8e2f8e6043874b0c28786accdc2d79838cbcf6e",
+    "comments_url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/b8e2f8e6043874b0c28786accdc2d79838cbcf6e/comments",
+    "author": {
+      "login": "0x-wzw",
+      "id": 212998865,
+      "node_id": "U_kgDODLIa0Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/212998865?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/0x-wzw",
+      "html_url": "https://github.com/0x-wzw",
+      "followers_url": "https://api.github.com/users/0x-wzw/followers",
+      "following_url": "https://api.github.com/users/0x-wzw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/0x-wzw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/0x-wzw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/0x-wzw/subscriptions",
+      "organizations_url": "https://api.github.com/users/0x-wzw/orgs",
+      "repos_url": "https://api.github.com/users/0x-wzw/repos",
+      "events_url": "https://api.github.com/users/0x-wzw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/0x-wzw/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "web-flow",
+      "id": 19864447,
+      "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/web-flow",
+      "html_url": "https://github.com/web-flow",
+      "followers_url": "https://api.github.com/users/web-flow/followers",
+      "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+      "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+      "organizations_url": "https://api.github.com/users/web-flow/orgs",
+      "repos_url": "https://api.github.com/users/web-flow/repos",
+      "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/web-flow/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4a5c773491a6b764089b5556522f43a8fd27c348",
+        "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/4a5c773491a6b764089b5556522f43a8fd27c348",
+        "html_url": "https://github.com/0x-wzw/Bazi_Daily_Decision_Tree/commit/4a5c773491a6b764089b5556522f43a8fd27c348"
+      },
+      {
+        "sha": "db1767cd83ddf85e8f3d63884c97cac609981c88",
+        "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/db1767cd83ddf85e8f3d63884c97cac609981c88",
+        "html_url": "https://github.com/0x-wzw/Bazi_Daily_Decision_Tree/commit/db1767cd83ddf85e8f3d63884c97cac609981c88"
+      }
+    ]
+  },
+  {
+    "sha": "db1767cd83ddf85e8f3d63884c97cac609981c88",
+    "node_id": "C_kwDORSub5toAKGRiMTc2N2NkODNkZGY4NWU4ZjNkNjM4ODRjOTdjYWM2MDk5ODFjODg",
+    "commit": {
+      "author": {
+        "name": "{_USER_NAME}",
+        "email": "zehan.teoh@gmail.com",
+        "date": "2026-04-13T09:57:32Z"
+      },
+      "committer": {
+        "name": "{_USER_NAME}",
+        "email": "zehan.teoh@gmail.com",
+        "date": "2026-04-13T09:57:32Z"
+      },
+      "message": "feat: Mental Models Framework - Cognitive Tools from Chinese Metaphysics\n\n## New Module: lib/mental_models/\nComprehensive mental models framework derived from Five Element philosophy:\n\n### Core Files\n- frameworks.ts: 15 mental models from Five Elements\n  - 3 models per element (Wood, Fire, Earth, Metal, Water)\n  - Each with application, triggers, antidotes, classical origins\n- utils.ts: Helper functions for working with models\n- index.ts: Module exports\n- README.md: Complete documentation\n\n### Decision Frameworks (5)\n1. Five Element Decision Matrix (五行决) - Multi-factor decisions\n2. Seasonal Timing Framework (待时而动) - When to act\n3. Ten God Interaction Model (十神应用) - Relationship analysis\n4. Branch Interaction Strategy (地支运筹) - Hidden dynamics\n5. Root and Branch Analysis (本末先后) - Finding leverage points\n\n### Cognitive Bias Detection (6)\n- Excessive Wood/Fire/Earth/Metal/Water biases\n- Missing Element Blindness\n\n### API Integration\n- /api/mental-models - REST API for model access\n- Search, filter by element, get recommendations\n\n### Report Integration\n- Mental model cards in interpretation report\n- Daily strategy cards\n- Bias warning cards\n- Core mental model highlight\n\nVeritas Vult",
+      "tree": {
+        "sha": "2d10187b5fcae2775485ce6523e26d7f4e57e21d",
+        "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/git/trees/2d10187b5fcae2775485ce6523e26d7f4e57e21d"
+      },
+      "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/git/commits/db1767cd83ddf85e8f3d63884c97cac609981c88",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/db1767cd83ddf85e8f3d63884c97cac609981c88",
+    "html_url": "https://github.com/0x-wzw/Bazi_Daily_Decision_Tree/commit/db1767cd83ddf85e8f3d63884c97cac609981c88",
+    "comments_url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/db1767cd83ddf85e8f3d63884c97cac609981c88/comments",
+    "author": {
+      "login": "0x-wzw",
+      "id": 212998865,
+      "node_id": "U_kgDODLIa0Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/212998865?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/0x-wzw",
+      "html_url": "https://github.com/0x-wzw",
+      "followers_url": "https://api.github.com/users/0x-wzw/followers",
+      "following_url": "https://api.github.com/users/0x-wzw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/0x-wzw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/0x-wzw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/0x-wzw/subscriptions",
+      "organizations_url": "https://api.github.com/users/0x-wzw/orgs",
+      "repos_url": "https://api.github.com/users/0x-wzw/repos",
+      "events_url": "https://api.github.com/users/0x-wzw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/0x-wzw/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "0x-wzw",
+      "id": 212998865,
+      "node_id": "U_kgDODLIa0Q",
+      "avatar_url": "https://avatars.githubusercontent.com/u/212998865?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/0x-wzw",
+      "html_url": "https://github.com/0x-wzw",
+      "followers_url": "https://api.github.com/users/0x-wzw/followers",
+      "following_url": "https://api.github.com/users/0x-wzw/following{/other_user}",
+      "gists_url": "https://api.github.com/users/0x-wzw/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/0x-wzw/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/0x-wzw/subscriptions",
+      "organizations_url": "https://api.github.com/users/0x-wzw/orgs",
+      "repos_url": "https://api.github.com/users/0x-wzw/repos",
+      "events_url": "https://api.github.com/users/0x-wzw/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/0x-wzw/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "4a5c773491a6b764089b5556522f43a8fd27c348",
+        "url": "https://api.github.com/repos/0x-wzw/Bazi_Daily_Decision_Tree/commits/4a5c773491a6b764089b5556522f43a8fd27c348",
+        "html_url": "https://github.com/0x-wzw/Bazi_Daily_Decision_Tree/commit/4a5c773491a6b764089b5556522f43a8fd27c348"
+      }
+    ]
+  }
+]

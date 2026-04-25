@@ -1,1 +1,158 @@
-File unchanged since last read. The content from the earlier read_file result in this conversation is still current — refer to that instead of re-reading.
+# Yin Counterpoint Generation Template
+# Used by Bazi Decision Engine to structure counter-arguments
+
+schema_version: "1.0"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# METAPHYSICAL BIRTH CHART OF DECISION
+# ───────────────────────────────────────────────────────────────────────────────
+
+decision_birth_chart:
+  year_pillar: ["", ""]   # [Stem, Branch]
+  month_pillar: ["", ""]  # [Stem, Branch]
+  day_pillar: ["", ""]    # [Stem, Branch]
+  hour_pillar: ["", ""]   # [Stem, Branch]
+  
+  day_master: ""          # The self-element
+  day_master_element: ""  # Wood | Fire | Earth | Metal | Water
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ENERGETIC CLIMATE ANALYSIS
+# ───────────────────────────────────────────────────────────────────────────────
+
+energetic_climate:
+  # Distribution of Five Elements in chart
+  element_distribution:
+    wood: { count: 0, intensity: "" }   # excessive | strong | balanced | weak | absent
+    fire: { count: 0, intensity: "" }
+    earth: { count: 0, intensity: "" }
+    metal: { count: 0, intensity: "" }
+    water: { count: 0, intensity: "" }
+  
+  # Day Master strength assessment
+  day_master_strength: ""  # strong | balanced | weak
+  
+  # Seasonal influence
+  dominant_season: ""  # spring | summer | late_summer | autumn | winter
+  
+  # Supporting vs controlling forces
+  support_elements: []    # Elements that nurture Day Master
+  control_elements: []    # Elements that restrain Day Master
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COUNTERPOINT ANALYSIS
+# ───────────────────────────────────────────────────────────────────────────────
+
+counterpoints:
+  # The mathematical view says X—what's missing?
+  
+  temporal_counterpoint:
+    mathematical_assumption: ""
+    metaphysical_reality: ""
+    critique: ""
+    recommendation: ""
+  
+  relational_counterpoint:
+    mathematical_assumption: ""
+    metaphysical_reality: ""
+    critique: ""
+    recommendation: ""
+  
+  systemic_counterpoint:
+    mathematical_assumption: ""
+    metaphysical_reality: ""
+    critique: ""
+    recommendation: ""
+  
+  blindspot_analysis:
+    what_was_invisible: ""
+    why_it_matters: ""
+    suggested_inquiry: ""
+
+# ───────────────────────────────────────────────────────────────────────────────
+# TIMING ASSESSMENT
+# ───────────────────────────────────────────────────────────────────────────────
+
+timing_assessment:
+  current_status: ""  # favorable | neutral | cautionary | unfavorable
+  
+  solar_term_analysis:
+    current_term: ""
+    term_element: ""
+    alignment_with_decision: ""
+  
+  luck_pillar_context:
+    # If stakeholder birth dates provided
+    relevant_period: ""
+    dominant_influence: ""
+  
+  optimal_windows:
+    - window: ""
+      reason: ""
+      confidence: ""  # high | medium | low
+  
+  warning_periods:
+    - period: ""
+      concern: ""
+      mitigation: ""
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COGNITIVE BIAS DETECTION
+# ───────────────────────────────────────────────────────────────────────────────
+
+bias_analysis:
+  # Map element imbalances to decision biases
+  
+  detected_imbalances:
+    - element: ""
+      level: ""  # excessive | deficient
+      associated_bias: ""
+      description: ""
+  
+  recommended_corrections:
+    - bias: ""
+      correction_strategy: ""
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SYNTHESIS WITH MATHEMATICAL VIEW
+# ───────────────────────────────────────────────────────────────────────────────
+
+synthesis:
+  # Overall agreement level
+  agreement_with_mathematical: ""  # full | partial | qualified | disagreement
+  
+  # Where perspectives converge
+  points_of_agreement: []
+  
+  # Where perspectives diverge
+  points_of_tension: []
+  
+  # The integrative recommendation
+  holistic_recommendation:
+    verdict: ""  # proceed | proceed_with_modifications | delay | decline | uncertain
+    confidence: ""  # high | medium | low
+    rationale: ""
+    
+    # Specific modifications suggested
+    modifications:
+      - area: ""
+        change: ""
+        reason: ""
+    
+    # Timing guidance
+    timing_guidance:
+      immediate_actions: []
+      short_term: []
+      medium_term: []
+      avoid_until: ""
+
+# ───────────────────────────────────────────────────────────────────────────────
+# STAKEHOLDER DYNAMICS (if birth data provided)
+# ───────────────────────────────────────────────────────────────────────────────
+
+stakeholder_analysis:
+  - name: ""
+    day_master: ""
+    relationship_to_decision: ""  # how their chart relates to decision chart
+    role_suitability: ""  # optimal | suitable | challenging | unfavorable
+    considerations: ""

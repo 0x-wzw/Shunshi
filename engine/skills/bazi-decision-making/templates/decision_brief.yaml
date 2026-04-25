@@ -1,1 +1,99 @@
-File unchanged since last read. The content from the earlier read_file result in this conversation is still current — refer to that instead of re-reading.
+# Decision Brief Template
+# Parent agent (mathematical system) fills this and sends to Bazi subagent
+
+schema_version: "1.0"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# DECISION CONTEXT
+# ───────────────────────────────────────────────────────────────────────────────
+
+decision_context:
+  # The core question being decided
+  question: ""
+  
+  # Classification for appropriate analysis depth
+  type: "strategic"  # strategic | tactical | operational | personal
+  
+  # Urgency affects temporal analysis
+  urgency: "medium"  # high | medium | low
+  
+  # Domain for selecting relevant metaphors
+  domain: ""  # business | technology | investment | personal | creative | other
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MATHEMATICAL/COMPUTATIONAL INPUT (The "Yang" Perspective)
+# ───────────────────────────────────────────────────────────────────────────────
+
+mathematical_recommendation:
+  # What the computational system concluded
+  conclusion: ""
+  
+  # Confidence level (0.0-1.0)
+  confidence: 0.0
+  
+  # Key factors considered
+  factors_considered: []
+  
+  # Methodology used
+  methodology: ""
+  
+  # Key assumptions
+  assumptions: []
+  
+  # Identified risks (rational/logistical)
+  risks: []
+
+# ───────────────────────────────────────────────────────────────────────────────
+# TEMPORAL ANCHORS
+# ───────────────────────────────────────────────────────────────────────────────
+
+# When was this decision formally proposed/initiated?
+# Format: ISO 8601 with timezone
+decision_birth_time: ""
+
+# When must decision be made by?
+decision_deadline: ""
+
+# Is there flexibility in execution timing?
+execution_flexibility:
+  has_flexibility: false
+  earliest: ""
+  latest: ""
+
+# ───────────────────────────────────────────────────────────────────────────────
+# STAKEHOLDER DYNAMICS
+# ───────────────────────────────────────────────────────────────────────────────
+
+stakeholders:
+  # List of key decision participants
+  # Include birth dates (YYYY-MM-DD) for Ten God dynamics if known
+  - name: ""
+    role: ""  # decision_maker | advisor | implementer | affected
+    birth_date: ""  # Optional: YYYY-MM-DD
+    birth_time: ""  # Optional: HH:MM (for hour pillar)
+
+# ───────────────────────────────────────────────────────────────────────────────
+# REQUEST SPECIFICATION
+# ───────────────────────────────────────────────────────────────────────────────
+
+request_type: "counterpoint"  # counterpoint | complement | full_analysis | timing_only
+
+# If timing_only, what's the decision?
+timing_context:
+  decision_summary: ""
+
+# Specific angles to emphasize (optional)
+emphasis:
+  - ""  # timing | relationships | risks | opportunities | resources
+
+# What output format?
+output_format: "yaml"  # yaml | markdown | json
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ANNOTATIONS (Parent agent can add notes)
+# ───────────────────────────────────────────────────────────────────────────────
+
+annotations:
+  known_concerns: []
+  unquantifiable_factors: []
+  relationship_dynamics: ""
