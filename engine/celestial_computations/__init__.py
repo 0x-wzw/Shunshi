@@ -1,1 +1,12 @@
-File unchanged since last read. The content from the earlier read_file result in this conversation is still current — refer to that instead of re-reading.
+"""
+Astrum Harmonis Celestialis
+==========================
+Chinese celestial cosmology and planetary mechanics.
+"""
+
+__version__ = "1.0.0"
+
+from .aether import CelestialConstants, HeavenlyStems, EarthlyBranches
+from .logos import BaziCalculator, FourPillars
+from .harmon import BaziAnalyzer, HexagramRelations
+from .praxis import CelestialAgent, ResultFormatter

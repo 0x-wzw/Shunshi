@@ -44,7 +44,6 @@ export function generateMvpReport({
     
     // Calculate Da Yun (Luck Pillars)
     const dayunResult = calculateDaYun(birthUtc, gender, {
-        tzOffsetMinutes,
         count: 8,
     });
     

@@ -64,7 +64,7 @@ export function weakestPlaybook(el: string): { why: string; whatToDo: string[]; 
     return playbooks[el] || { why: "Unknown weakest", whatToDo: [], tags: [] };
 }
 
-export function elementCards(v: ElementVector): InterpretationCard[] {
+export function elementCards(v: ElementVector, _analyzedBazi?: any): InterpretationCard[] {
     const normalized = normalize(v);
     const dominant = topN(normalized, 1)[0];
     const weakest = bottomN(normalized, 1)[0];
@@ -107,4 +107,47 @@ export function elementCards(v: ElementVector): InterpretationCard[] {
     }
 
     return cards;
+}
+
+// ── Branch Interactions (Stub for compatibility) ──
+export interface AnalyzedBazi {
+    pillars: {
+        year: { zh: string; pinyin: string; element: string };
+        month: { zh: string; pinyin: string; element: string };
+        day: { zh: string; pinyin: string; element: string; hidden?: string };
+        hour: { zh: string; pinyin: string; element: string; hidden?: string };
+    };
+    dayMaster: { stem: string; element: string; yinYang: string; pinyin: string };
+    elements: { wood: number; fire: number; earth: number; metal: number; water: number };
+    tenGods: Record<string, string>;
+    solarTerms: { current: string; next: string };
+}
+
+export function analyzeBranchInteractions(branches: string[]): Array<{ type: string; branches: string[]; interpretation: string }> {
+    const interactions: Array<{ type: string; branches: string[]; interpretation: string }> = [];
+    
+    const clashes: Record<string, string> = { 子: "午", 丑: "未", 寅: "申", 卯: "酉", 辰: "戌", 巳: "亥" };
+    const harmony: Record<string, string> = { 子: "丑", 寅: "亥", 卯: "戌", 辰: "酉", 巳: "申", 午: "未" };
+    
+    for (let i = 0; i < branches.length; i++) {
+        for (let j = i + 1; j < branches.length; j++) {
+            const b1 = branches[i], b2 = branches[j];
+            if (clashes[b1] === b2 || clashes[b2] === b1) {
+                interactions.push({
+                    type: "clash",
+                    branches: [b1, b2],
+                    interpretation: `${b1}${b2}冲 — 激发变动的能量，在冲突中创造突破。`,
+                });
+            }
+            if (harmony[b1] === b2 || harmony[b2] === b1) {
+                interactions.push({
+                    type: "combine",
+                    branches: [b1, b2],
+                    interpretation: `${b1}${b2}合 — 阴阳互补，合作共赢的契机。`,
+                });
+            }
+        }
+    }
+    
+    return interactions;
 }

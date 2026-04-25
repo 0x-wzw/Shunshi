@@ -551,4 +551,5 @@ export function getDailyStrategy(
     };
 }
 
-export { ELEMENTAL_MENTAL_MODELS, DECISION_FRAMEWORKS, ELEMENTAL_COGNITIVE_BIAS };
+// Re-exports removed — symbols already exported at their declarations above
+// export { ELEMENTAL_MENTAL_MODELS, DECISION_FRAMEWORKS, ELEMENTAL_COGNITIVE_BIAS };
