@@ -287,7 +287,9 @@ class HexagramCalculator:
         # Nuclear upper trigram = lines 3,4,5 from bottom = indices 3,2,1
         upper_binary = "".join([lines[3], lines[2], lines[1]])
 
-        nuclear_binary = upper_binary + lower_binary
+        # Reverse each trigram: indices 4,3,2 are bottom→top, but binary is top→bottom
+        # upper_binary[::-1] = top→bottom, lower_binary[::-1] = top→bottom
+        nuclear_binary = upper_binary[::-1] + lower_binary[::-1]
         return HEXAGRAM_BY_BINARY[nuclear_binary]
 
     @staticmethod
@@ -380,11 +382,11 @@ class HexagramCalculator:
         "乾": [1, 44, 33, 12, 20, 23, 35, 14],   # Qian palace
         "震": [51, 16, 40, 32, 46, 48, 28, 17],  # Zhen palace
         "坎": [29, 60, 3, 63, 49, 55, 36, 7],    # Kan palace
-        "艮": [52, 56, 39, 15, 62, 53, 31, 33],  # Gen palace — adjusted
-        "坤": [2, 24, 7, 19, 15, 36, 46, 2],     # Kun palace — adjusted
-        "巽": [57, 9, 37, 42, 25, 21, 35, 44],   # Xun palace
-        "离": [30, 56, 50, 64, 4, 59, 38, 10],   # Li palace — adjusted
-        "兑": [58, 47, 6, 13, 49, 31, 45, 10],   # Dui palace — adjusted
+        "艮": [52, 22, 26, 41, 38, 10, 61, 53],  # Gen palace
+        "坤": [2, 24, 7, 19, 15, 36, 46, 11],    # Kun palace
+        "巽": [57, 9, 37, 42, 25, 21, 27, 18],   # Xun palace
+        "离": [30, 56, 50, 64, 4, 59, 6, 13],    # Li palace
+        "兑": [58, 47, 45, 31, 39, 15, 62, 54],  # Dui palace
     }
 
     @classmethod

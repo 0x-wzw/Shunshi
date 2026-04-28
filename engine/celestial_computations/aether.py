@@ -135,7 +135,7 @@ class CelestialConstants:
         "大林木": Element.WOOD, "杨柳木": Element.WOOD, "松柏木": Element.WOOD,
         "平地木": Element.WOOD, "桑柘木": Element.WOOD, "石榴木": Element.WOOD,
         "路旁土": Element.EARTH, "城头土": Element.EARTH, "屋上土": Element.EARTH,
-        "霹雳火": Element.EARTH, "壁上土": Element.EARTH, "大驿土": Element.EARTH,
+        "霹雳火": Element.FIRE, "壁上土": Element.EARTH, "大驿土": Element.EARTH,
         "涧下水": Element.WATER, "泉中水": Element.WATER, "长流水": Element.WATER,
         "天河水": Element.WATER, "大溪水": Element.WATER, "大海水": Element.WATER,
     }

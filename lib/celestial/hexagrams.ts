@@ -224,7 +224,7 @@ export const HEXAGRAMS: Hexagram[] = [
       image: 'Heaven and water go their opposite ways. The superior person plans the beginning of all undertakings.' },
     
     { number: 7, name: { chinese: '師', pinyin: 'Shī', english: 'The Army' },
-      binary: '0000100', trigrams: { upper: '☷', lower: '☵' }, binaryValue: 4,
+      binary: '000010', trigrams: { upper: '☷', lower: '☵' }, binaryValue: 2,
       attributes: { element: 'earth', nature: 'military', quality: 'stable' },
       judgment: 'The Army needs perseverance and a strong person. Good fortune without blame.',
       image: 'Water in the midst of the earth. The superior person nourishes the people and takes their multitude together.' },
@@ -284,7 +284,7 @@ export const HEXAGRAMS: Hexagram[] = [
       image: 'Thunder under heaven. The superior person takes its first step according to the movement of the seasons.' },
     
     { number: 26, name: { chinese: '大畜', pinyin: 'Dà Chù', english: 'The Taming Power of the Great' },
-      binary: '111001', trigrams: { upper: '☶', lower: '☰' }, binaryValue: 57,
+      binary: '100111', trigrams: { upper: '☶', lower: '☰' }, binaryValue: 39,
       attributes: { element: 'wood', nature: 'accumulation', quality: 'stable' },
       judgment: 'The Taming Power of the Great. Perseverance furthers. It is favorable not to eat at home.',
       image: 'Heaven in the mountain. The superior person acquires exact knowledge and makes their virtue great.' },
@@ -485,12 +485,18 @@ export function getOppositeHexagram(hexagram: Hexagram): Hexagram {
  * Calculate nuclear hexagram (center 4 lines become outer 4)
  */
 export function getNuclearHexagram(hexagram: Hexagram): Hexagram {
-    // Inner 4 lines (positions 2-5) become new trigrams
-    const inner = hexagram.binary.substring(1, 5); // bits 2-5
-    const upper = inner.substring(2, 4); // bits 4-5 → new upper
-    const lower = inner.substring(0, 2); // bits 2-3 → new lower
-    const nuclearBinary = upper + '00' + lower; // pad with yin lines
-    
+    // Extract nuclear lines (lines 2,3,4 → lower nuclear; lines 3,4,5 → upper nuclear)
+    // binary is top-to-bottom: index 0=top(yao6), index 5=bottom(yao1)
+    const chars = hexagram.binary.split('');
+    // Line 2 = index 4, Line 3 = index 3, Line 4 = index 2 (bottom→top extraction)
+    // Line 3 = index 3, Line 4 = index 2, Line 5 = index 1 (bottom→top extraction)
+    const lowerBits = chars[4] + chars[3] + chars[2];  // bottom→top
+    const upperBits = chars[3] + chars[2] + chars[1];  // bottom→top
+    // Reverse each trigram to top→bottom convention for binary composition
+    const lowerReversed = lowerBits.split('').reverse().join('');
+    const upperReversed = upperBits.split('').reverse().join('');
+    const nuclearBinary = upperReversed + lowerReversed;
+
     return HEXAGRAM_BY_BINARY.get(nuclearBinary) || hexagram;
 }
 
