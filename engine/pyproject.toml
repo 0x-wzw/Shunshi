@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kairos-engine"
-version = "1.1.0"
+version = "3.0.0"
 description = "Kairos Celestial Computation Engine — Bazi (八字), Zhouyi (周易), and planetary mechanics"
 readme = "README.md"
 license = {text = "MIT"}

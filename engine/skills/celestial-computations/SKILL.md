@@ -5,7 +5,7 @@ description: >
   Astrum Harmonis Celestialis — A specialized computational agent mastering 
   Chinese celestial cosmology (Bazi/Four Pillars, Zhouyi/I Ching) and 
   planetary/celestial mechanics.
-version: 1.1.0
+version: 3.0.0
 author: Dodecimus for {_USER_NAME}
 license: MIT
 platforms: [linux, macos, windows]

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# === Kairos Pre-Commit ===
+# Scans staged changes for secrets, keys, and tokens.
+# Run: git config core.hooksPath .githooks
+set -euo pipefail
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${YELLOW}🔍 Scanning for secrets in staged changes...${NC}"
+
+# Get staged diff (new/added lines only)
+DIFF=$(git diff --cached -U0)
+ADDED=$(echo "$DIFF" | grep '^+' | grep -v '^+++' || true)
+
+# --- High-confidence secrets ---
+HIGH_CONFIDENCE=(
+    "sk-[A-Za-z0-9]{32,}"                    # OpenAI / generic API keys
+    "sk-ant-[A-Za-z0-9_-]{20,}"              # Anthropic keys
+    "ghp_[A-Za-z0-9]{36}"                    # GitHub personal access tokens (classic)
+    "gho_[A-Za-z0-9]{36}"                    # GitHub OAuth tokens
+    "github_pat_[A-Za-z0-9_]{20,}"           # GitHub fine-grained tokens
+    "hf_[A-Za-z0-9]{20,}"                    # HuggingFace tokens
+    "xox[baprs]-[A-Za-z0-9-]{10,}"           # Slack tokens
+    "eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}"  # JWTs (long)
+    "BEGIN (RSA|EC|OPENSSH|DSA) PRIVATE KEY" # Private keys
+    "AIza[0-9A-Za-z_-]{35}"                  # Google API keys
+)
+
+# --- Medium-confidence patterns ---
+MEDIUM_CONFIDENCE=(
+    '(api_key|apikey|secret_key|private_key|access_key|auth_token)\s*[:=]\s*['\''"][A-Za-z0-9+/=_-]{12,}['\''"]'
+    '(password|passwd)\s*[:=]\s*['\''"][^'\''"]{6,}['\''"]'
+    '(DATABASE_URL|MONGO_URI|REDIS_URL|RABBITMQ_URL)\s*=\s*["'\'']?[a-z]+://[^:]+:[^@]+@'
+)
+
+FOUND=0
+
+for pattern in "${HIGH_CONFIDENCE[@]}"; do
+    if echo "$ADDED" | grep -qE "$pattern" 2>/dev/null; then
+        echo -e "${RED}❌ HIGH: Secret matched pattern: $pattern${NC}"
+        echo "$ADDED" | grep -nE "$pattern" | head -5
+        FOUND=1
+    fi
+done
+
+for pattern in "${MEDIUM_CONFIDENCE[@]}"; do
+    if echo "$ADDED" | grep -qE "$pattern" 2>/dev/null; then
+        echo -e "${RED}⚠️  MEDIUM: Potential secret matched: $pattern${NC}"
+        echo "$ADDED" | grep -nE "$pattern" | head -5
+        FOUND=1
+    fi
+done
+
+# --- Hardcoded URLs with credentials ---
+if echo "$ADDED" | grep -qE '(mysql|postgres|mongodb|redis)://[^:]+:[^@]+@'; then
+    echo -e "${RED}❌ Database URL with embedded credentials found${NC}"
+    FOUND=1
+fi
+
+if [ "$FOUND" -eq 1 ]; then
+    echo ""
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${RED}  COMMIT BLOCKED — secrets detected above${NC}"
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+    echo "  To override (NOT recommended): git commit --no-verify"
+    echo "  To fix: remove secrets and use environment variables / .env.local"
+    echo ""
+    exit 1
+fi
+
+echo -e "${GREEN}✅ No secrets detected — commit allowed.${NC}"
+exit 0
