@@ -59,10 +59,12 @@ class BaziCalculator:
         )
     
     def _calculate_month_pillar(self, year: int, month: int):
-        branch_idx = (month + 1) % 12
+        """month is Gregorian (1=January). Internally converts to Chinese zodiac month (1=寅)."""
+        zodiac_month = (month - 2) % 12 + 1  # Feb→1(寅), May→4(巳), Jan→12(丑)
+        branch_idx = (zodiac_month + 1) % 12
         year_stem_idx = (year - 4) % 10
         month_stem_base = {0: 2, 1: 4, 2: 0, 3: 6, 4: 3}
-        stem_idx = (month_stem_base.get(year_stem_idx % 5, 0) + month - 1) % 10
+        stem_idx = (month_stem_base.get(year_stem_idx % 5, 0) + zodiac_month - 1) % 10
         return (
             CelestialConstants.HEAVENLY_STEMS[stem_idx],
             CelestialConstants.EARTHLY_BRANCHES[branch_idx]
