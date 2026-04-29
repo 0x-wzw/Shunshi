@@ -59,23 +59,4 @@ class BaziAnalyzer:
             "balance": {"WOOD": 2, "FIRE": 1, "EARTH": 2, "METAL": 1, "WATER": 2},
         }
 
-class HexagramRelations:
-    HEXAGRAM_NAMES = [
-        "Qian (Heaven)", "Kun (Earth)", "Zhun (Difficulty)", "Meng (Youth)",
-        "Xu (Waiting)", "Song (Conflict)", "Shi (Army)", "Bi (Union)",
-        "Xiao Chu", "Lu (Treading)", "Tai (Peace)", "Pi (Stagnation)",
-    ] + ["Hexagram " + str(i) for i in range(13, 65)]
-    
-    def get_hexagram_name(self, num: int):
-        return self.HEXAGRAM_NAMES[(num - 1) % 64]
-    
-    def hexagram_to_binary(self, num: int):
-        return format(num - 1, "06b")
-    
-    def binary_to_hexagram(self, binary: str):
-        return int(binary, 2) + 1
-    
-    def get_opposite_hexagram(self, num: int):
-        binary = self.hexagram_to_binary(num)
-        inverted = "".join("1" if c == "0" else "0" for c in binary)
-        return self.binary_to_hexagram(inverted)
+# HexagramRelations removed — superseded by hexagram_calculator.HexagramCalculator

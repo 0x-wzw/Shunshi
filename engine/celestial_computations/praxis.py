@@ -9,7 +9,7 @@ from typing import Dict, List, Optional
 
 from .aether import CelestialConstants
 from .logos import BaziCalculator, SolarTermCalculator, PlanetaryEphemeris
-from .harmon import BaziAnalyzer, HexagramRelations
+from .harmon import BaziAnalyzer
 from .hexagram_calculator import HexagramCalculator, HEXAGRAM_BY_NUMBER
 
 class CelestialAgent:
@@ -18,7 +18,6 @@ class CelestialAgent:
         self.solar_calc = SolarTermCalculator()
         self.planet_calc = PlanetaryEphemeris()
         self.analyzer = BaziAnalyzer()
-        self.hexagram_rels = HexagramRelations()
         self.hex_calc = HexagramCalculator()
     
     def bazi_chart(self, year: int, month: int, day: int, hour: int = 12):
