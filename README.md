@@ -243,4 +243,4 @@ The goal is **temporal calibration** — understanding when conditions favor:
 
 MIT © 2025–2026 0x-wzw
 
-*Powered by BaZi Decision Intelligence • Authentic 八字 Calculation • Temporal Calibration*
+*Powered by BaZi Decision Intelligence • Authentic 八字 Calculation • Temporal Calibration* 
