@@ -11,6 +11,7 @@ from .aether import CelestialConstants
 from .logos import BaziCalculator, SolarTermCalculator, PlanetaryEphemeris
 from .harmon import BaziAnalyzer
 from .hexagram_calculator import HexagramCalculator, HEXAGRAM_BY_NUMBER
+from .shunshi import ShunShiEngine
 
 class CelestialAgent:
     def __init__(self):
@@ -87,6 +88,29 @@ class CelestialAgent:
     def all_hexagrams(self):
         return [h.to_dict() for h in self.hex_calc.all_64_hexagrams()]
 
+    # ── Shunshi Decision API ──────────────────────────────────
+
+    def shunshi_decision(self, year: int, month: int, day: int,
+                         hour: int = 12, gender: str = 'male',
+                         question: str = '') -> Dict:
+        """Run the full four-stage Shunshi decision flow."""
+        from datetime import datetime
+        engine = ShunShiEngine(datetime(year, month, day, hour), gender=gender)
+        return engine.full_decision(question)
+
+    def shunshi_hexagram(self) -> Dict:
+        """Generate a coin-toss hexagram reading (situational simulation)."""
+        from .shunshi import toss_hexagram
+        reading = toss_hexagram()
+        orig = reading['original']
+        chg = reading.get('changed')
+        return {
+            '本卦': orig.to_dict(),
+            '变卦': chg.to_dict() if chg else None,
+            '变爻': reading['changing_positions'],
+            '爻象': reading['lines'],
+        }
+
 class ResultFormatter:
     @staticmethod
     def format_bazi(chart: Dict):
@@ -105,7 +129,7 @@ class ResultFormatter:
 
 def main():
     parser = argparse.ArgumentParser(description="Astrum Harmonis Celestialis")
-    parser.add_argument("command", choices=["bazi", "hexagram", "planetary", "now", "report"])
+    parser.add_argument("command", choices=["bazi", "hexagram", "planetary", "now", "report", "shunshi"])
     parser.add_argument("args", nargs="*")
     parser.add_argument("--json", "-j", action="store_true")
     
@@ -122,9 +146,19 @@ def main():
     elif args.command == "hexagram" and args.args:
         result = agent.hexagram_reading(int(args.args[0]))
         print(json.dumps(result, indent=2))
-    
+
+    elif args.command == "shunshi" and len(args.args) >= 3:
+        year, month, day = map(int, args.args[:3])
+        hour = int(args.args[3]) if len(args.args) > 3 else 12
+        gender = args.args[4] if len(args.args) > 4 else 'male'
+        question = ' '.join(args.args[5:]) if len(args.args) > 5 else ''
+        result = agent.shunshi_decision(year, month, day, hour, gender, question)
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+
     else:
         print("Usage: python -m celestial_computations bazi YEAR MONTH DAY [HOUR]")
+        print("       python -m celestial_computations shunshi YEAR MONTH DAY [HOUR] [gender] [question]")
+        print("       python -m celestial_computations hexagram NUMBER")
 
 if __name__ == "__main__":
     main()

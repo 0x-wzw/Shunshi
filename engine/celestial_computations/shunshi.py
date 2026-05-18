@@ -27,7 +27,7 @@ from .hexagram_calculator import (
     HEXAGRAM_BY_NUMBER,
     HEXAGRAM_BY_BINARY,
 )
-from .fengshui import kua_number, direction_analysis, analyze as fengshui_analyze
+from .fengshui import kua_number_from_date, direction_analysis, analyze as fengshui_analyze
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -138,8 +138,10 @@ class ShunShiEngine:
         # Element balance from pillars
         self._element_count = self._count_elements()
 
-        # Fengshui
-        self._kua = kua_number(birth_dt.year, gender)
+        # Fengshui — use 立春-aware calculation from birth date
+        self._kua = kua_number_from_date(
+            birth_dt.year, birth_dt.month, birth_dt.day, gender
+        )
         self._fengshui = direction_analysis(self._kua)
 
     # ── helpers ─────────────────────────────────────────

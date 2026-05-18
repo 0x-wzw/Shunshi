@@ -33,15 +33,65 @@ class FourPillars:
         }
 
 class BaziCalculator:
+    # ── Solar Term Date Table (节气日期表) ──
+    # Approximate Gregorian month/day for 小寒 (Minor Cold, 285°) per year.
+    # 小寒 determines whether Jan births are still in 子月 (子月 = 小寒 to 立春前).
+    # Default: Jan 6. Precomputed offsets for known years.
+    _XIAOHAN_OFFSET = {
+        1980: 6, 1979: 6, 1978: 6, 1977: 5,
+        # Default: Jan 6 for most years (occasional Jan 5)
+    }
+    # Approximate Gregorian month/day for 立春 (Start of Spring, 315°) per year.
+    # 立春 determines Chinese year boundary.
+    # Default: Feb 4. Precomputed offsets for known years.
+    _LICHUN_OFFSET = {
+        1980: 5, 1979: 4, 1978: 4, 1977: 4,
+        # Default: Feb 4 for most years (occasional Feb 5)
+    }
+
     def __init__(self):
         self.skyfield_available = SKYFIELD_AVAILABLE
-    
+        self._solar_calc = SolarTermCalculator()
+
+    def _get_chinese_year(self, year: int, month: int, day: int) -> int:
+        """Return the Chinese calendar year accounting for 立春 boundary.
+
+        Before 立春 (Start of Spring, ~Feb 4-5), the Chinese year is YEAR - 1.
+        """
+        lichun_day = self._LICHUN_OFFSET.get(year, 4)
+        lichun_month = 2  # February
+        if month < lichun_month or (month == lichun_month and day < lichun_day):
+            return year - 1
+        return year
+
+    def _get_solar_month(self, year: int, month: int, day: int) -> int:
+        """Return the Chinese zodiac month (1=寅) accounting for 节气 boundaries.
+
+        Gregorian months map to zodiac months as:
+          Feb → 1(寅), Mar → 2(卯), Apr → 3(辰), May → 4(巳), Jun → 5(午),
+          Jul → 6(未), Aug → 7(申), Sep → 8(酉), Oct → 9(戌), Nov → 10(亥),
+          Dec → 11(子), Jan → 12(丑)
+
+        BUT: Jan 1-5 is BEFORE 小寒 → still 子月 (11), not 丑月 (12).
+        """
+        xiaohan_day = self._XIAOHAN_OFFSET.get(year, 6)
+        # Jan 1-5: pre-小寒 → 子月 (11)
+        if month == 1 and day < xiaohan_day:
+            return 11  # 子月
+        # Standard mapping for other dates
+        return (month - 2) % 12 + 1  # Feb→1(寅), Jan→12(丑), etc.
+
     def calculate(self, year: int, month: int, day: int, hour: int = 12):
-        year_stem, year_branch = self._calculate_year_pillar(year)
-        month_stem, month_branch = self._calculate_month_pillar(year, month)
+        chinese_year = self._get_chinese_year(year, month, day)
+        zodiac_month = self._get_solar_month(year, month, day)
+
+        year_stem, year_branch = self._calculate_year_pillar(chinese_year)
+        month_stem, month_branch = self._calculate_month_pillar_from_zodiac(
+            chinese_year, zodiac_month
+        )
         day_stem, day_branch = self._calculate_day_pillar(year, month, day)
         hour_stem, hour_branch = self._calculate_hour_pillar(day_stem, hour)
-        
+
         return FourPillars(
             year_pillar=(year_stem, year_branch),
             month_pillar=(month_stem, month_branch),
@@ -49,7 +99,7 @@ class BaziCalculator:
             hour_pillar=(hour_stem, hour_branch),
             day_master=day_stem
         )
-    
+
     def _calculate_year_pillar(self, year: int):
         stem_idx = (year - 4) % 10
         branch_idx = (year - 4) % 12
@@ -57,18 +107,27 @@ class BaziCalculator:
             CelestialConstants.HEAVENLY_STEMS[stem_idx],
             CelestialConstants.EARTHLY_BRANCHES[branch_idx]
         )
-    
-    def _calculate_month_pillar(self, year: int, month: int):
-        """month is Gregorian (1=January). Internally converts to Chinese zodiac month (1=寅)."""
-        zodiac_month = (month - 2) % 12 + 1  # Feb→1(寅), May→4(巳), Jan→12(丑)
+
+    def _calculate_month_pillar_from_zodiac(
+        self, year: int, zodiac_month: int
+    ):
+        """Calculate month pillar from Chinese year and zodiac month (1=寅...12=丑)."""
         branch_idx = (zodiac_month + 1) % 12
         year_stem_idx = (year - 4) % 10
-        month_stem_base = {0: 2, 1: 4, 2: 0, 3: 6, 4: 3}
-        stem_idx = (month_stem_base.get(year_stem_idx % 5, 0) + zodiac_month - 1) % 10
+        # 五虎遁 month stem base (寅月 stem for each year stem type)
+        month_stem_base = {0: 2, 1: 4, 2: 6, 3: 8, 4: 0}
+        stem_idx = (
+            month_stem_base.get(year_stem_idx % 5, 0) + zodiac_month - 1
+        ) % 10
         return (
             CelestialConstants.HEAVENLY_STEMS[stem_idx],
             CelestialConstants.EARTHLY_BRANCHES[branch_idx]
         )
+
+    def _calculate_month_pillar(self, year: int, month: int):
+        """DEPRECATED: use calculate() which auto-resolves zodiac month via 节气."""
+        zodiac_month = self._get_solar_month(year, month, 1)
+        return self._calculate_month_pillar_from_zodiac(year, zodiac_month)
     
     def _calculate_day_pillar(self, year: int, month: int, day: int):
         """

@@ -15,6 +15,14 @@ EAST_LIFE = {1, 3, 4, 9}      # 东四命
 WEST_LIFE = {2, 6, 7, 8}      # 西四命
 CENTRE = {5}                   # 中宫（男寄坤2、女寄艮8）
 
+# 立春日期表：每年立春在 February 的日期
+# Default: Feb 4. Occasional Feb 5 (e.g. 1980, 2017).
+_LICHUN_DAY = {
+    1980: 5, 1979: 4, 1978: 4, 1977: 4,
+    2017: 5, 2016: 4, 2015: 4,
+    # Default: Feb 4
+}
+
 # 八宅吉凶方位
 DIRECTIONS_EIGHT = ['生气', '天医', '延年', '伏位', '祸害', '六煞', '五鬼', '绝命']
 
@@ -40,12 +48,26 @@ def _reduce_to_single_digit(n: int) -> int:
     return n
 
 
+def _get_chinese_birth_year(year: int, month: int, day: int) -> int:
+    """Return the Chinese calendar birth year accounting for 立春 boundary.
+
+    Before 立春, the Chinese year is YEAR - 1.
+    """
+    lichun_day = _LICHUN_DAY.get(year, 4)
+    if month < 2 or (month == 2 and day < lichun_day):
+        return year - 1
+    return year
+
+
 def kua_number(birth_year: int, gender: str = 'male') -> int:
     """
     根据出生年份计算命卦数 (1-9)。
 
+    注意：此函数假定传入的是**农历年号**（已考虑立春边界）。
+    如需从公历出生日期直接计算，请使用 kua_number_from_date()。
+
     Args:
-        birth_year: 出生年份（公元）
+        birth_year: 出生年份（农历，已过立春或已调整）
         gender: 'male' | 'female'
 
     Returns:
@@ -66,6 +88,25 @@ def kua_number(birth_year: int, gender: str = 'male') -> int:
         return 2 if gender == 'male' else 8
 
     return kua
+
+
+def kua_number_from_date(year: int, month: int, day: int, gender: str = 'male') -> int:
+    """根据公历出生日期计算命卦数 (1-9)，自动处理立春边界。
+
+    对于公历 Jan 1 – Feb 3/4 出生的人，
+    农历年份比公历小 1（例如 1980-01-05 → 1979 年）。
+
+    Args:
+        year: 公历出生年份
+        month: 公历出生月份 (1=Jan)
+        day: 公历出生日
+        gender: 'male' | 'female'
+
+    Returns:
+        命卦数 1-9（5 寄 2/8）
+    """
+    chinese_year = _get_chinese_birth_year(year, month, day)
+    return kua_number(chinese_year, gender)
 
 
 def _get_life_group(kua: int) -> str:
@@ -121,7 +162,17 @@ def direction_analysis(kua: int) -> Dict:
 # ── 简便接口 ─────────────────────────────────────────
 
 
-def analyze(birth_year: int, gender: str = 'male') -> Dict:
-    """一站式命卦分析（给定出生年份和性别）。"""
-    kua = kua_number(birth_year, gender)
+def analyze(birth_year: int, gender: str = 'male', birth_month: int = None, birth_day: int = None) -> Dict:
+    """一站式命卦分析。
+
+    Args:
+        birth_year: 公历出生年份
+        gender: 'male' | 'female'
+        birth_month: 公历出生月份 (1=Jan)，可选
+        birth_day: 公历出生日，可选
+    """
+    if birth_month is not None and birth_day is not None:
+        kua = kua_number_from_date(birth_year, birth_month, birth_day, gender)
+    else:
+        kua = kua_number(birth_year, gender)
     return direction_analysis(kua)
