@@ -33,7 +33,7 @@ b = priv["birth"]
 birth_dt = datetime(b["year"], b["month"], b["day"], b["hour"], b["minute"])
 gender = priv["gender"]
 
-sys.path.insert(0, os.path.expanduser("~/Kairos/engine"))
+sys.path.insert(0, os.path.expanduser("~/Shunshi/engine"))
 from celestial_computations.shunshi import ShunShiEngine, toss_hexagram, shengbei_toss
 from celestial_computations.hexagram_calculator import HexagramCalculator, HEXAGRAM_BY_NUMBER
 from celestial_computations.logos import BaziCalculator
