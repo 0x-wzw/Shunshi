@@ -1,7 +1,7 @@
 {
-  "name": "kairos",
+  "name": "shunshi",
   "version": "3.0.0",
-  "description": "Temporal Decision Intelligence — The right moment to act",
+  "description": "Shunshi (顺势) — Temporal Decision Intelligence. Follow the momentum.",
   "private": true,
   "scripts": {
     "dev": "next dev",

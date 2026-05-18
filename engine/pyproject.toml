@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "kairos-engine"
+name = "shunshi-engine"
 version = "3.0.0"
-description = "Kairos Celestial Computation Engine — Bazi (八字), Zhouyi (周易), and planetary mechanics"
+description = "Shunshi Celestial Computation Engine — Bazi (八字), Zhouyi (周易), and planetary mechanics"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
