@@ -14,6 +14,7 @@ Notion parent: from .bazi-private.json → notion_page_id
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.request
@@ -31,8 +32,24 @@ b = priv["birth"]
 birth_dt = datetime(b["year"], b["month"], b["day"], b["hour"], b["minute"])
 gender = priv["gender"]
 
-# ── Load engine ────────────────────────────────────────────────
+# ── Pull latest engine from GitHub ─────────────────────────────
 SHUNSHI_DIR = os.path.expanduser("~/Shunshi")
+try:
+    result = subprocess.run(
+        ["git", "pull", "--ff-only", "origin", "main"],
+        cwd=SHUNSHI_DIR,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    if result.returncode != 0:
+        print(f"⚠️ git pull failed (non-fatal, running with local code): {result.stderr.strip()}", file=sys.stderr)
+    else:
+        print(f"📡 git pull: {result.stdout.strip()}", file=sys.stderr)
+except Exception as e:
+    print(f"⚠️ git pull error (non-fatal): {e}", file=sys.stderr)
+
+# ── Load engine ────────────────────────────────────────────────
 sys.path.insert(0, os.path.join(SHUNSHI_DIR, "engine"))
 
 # Import the existing report module from ~/Shunshi/scripts/
