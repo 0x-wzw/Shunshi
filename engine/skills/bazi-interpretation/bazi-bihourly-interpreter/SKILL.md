@@ -9,7 +9,7 @@ triggers:
 
 ## Steps
 
-1. Identify the user's birth chart from user profile ({_USER_NAME}, Day Master 丁火, >{?} {?} {?} {?}).
+1. Identify the user's birth chart from user profile (dynamically loaded from ~/.hermes/.bazi-private.json or vault).
 2. Identify the current date, day pillar, and hour pillar from the cronjob report.
 3. Present the report timeline in plain Chinese:
    - Date/time/节气

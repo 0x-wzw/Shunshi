@@ -27,7 +27,6 @@ from celestial_computations.shunshi import ShunShiEngine
 from celestial_computations.hexagram_calculator import HexagramCalculator
 from celestial_computations.logos import BaziCalculator
 
-
 # ═══════════════════════════════════════════════════════════════
 # CONSTANTS
 # ═══════════════════════════════════════════════════════════════
@@ -129,7 +128,6 @@ SHICHEN_TABLE = [
     ("亥时", "21:00—23:00", "人定·三焦经", "三焦经通，阴阳交接。宜放松、泡脚、准备入睡。"),
 ]
 
-
 # ═══════════════════════════════════════════════════════════════
 # ENGINE CLASS
 # ═══════════════════════════════════════════════════════════════
@@ -155,7 +153,7 @@ class ShichenReportEngine:
 
     @property
     def natal_bazi_str(self) -> str:
-        """八字 string: >{?} {?} {?} {?}"""
+        """八字 string: dynamically loaded from user profile"""
         return self._shunshi.bazi_summary()
 
     @property

@@ -26,7 +26,18 @@ if not NOTION_KEY:
                     NOTION_KEY = line.strip().split('=', 1)[1]
                     break
 
-PARENT_PAGE_ID = "34d05e4a-7c41-8173-9067-f8eb5fa8c9a6"  # 八字24小时对参
+# Load parent page ID from env or vault
+PARENT_PAGE_ID = os.environ.get("SHUNSHI_NOTION_PARENT_ID", "")
+if not PARENT_PAGE_ID:
+    # Try loading from private config
+    priv = os.path.expanduser("~/.hermes/.bazi-private.json")
+    if os.path.exists(priv):
+        import json
+        with open(priv, encoding="utf-8") as f:
+            cfg = json.load(f)
+        PARENT_PAGE_ID = cfg.get("notion_page_id", "")
+if not PARENT_PAGE_ID:
+    raise RuntimeError("SHUNSHI_NOTION_PARENT_ID not set in env or ~/.hermes/.bazi-private.json")
 NOTION_VERSION = "2025-09-03"
 
 def _notion_req(path, data, method="POST"):

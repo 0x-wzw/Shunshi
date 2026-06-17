@@ -2,8 +2,8 @@
 """
 八字双时辰对参（天文精算版）— {_USER_NAME}
 出生：
-本命：>{?} {?} {?} {?}
 
+大运：从用户资料计算
 
 改进项：
 1. 太阳黄经精确计算节气（ephem）
@@ -490,26 +490,29 @@ def get_planetary_positions(observer):
     return results
 
 # ═══════════════════════════════════════════════════════════════════
-# 大运引擎 ({_USER_NAME}专用)
+# 大运引擎（用户专属）
 # ═══════════════════════════════════════════════════════════════════
 
-# >阴年男命 → 逆排 from 月柱
+# 从用户资料计算大运（阴年男命逆排）
 大运序列 = [
-    ('乙亥', 4, 14),
-    ('甲戌', 14, 24),
-    ('癸酉', 24, 34),
-    ('壬申', 34, 44),
-    ('辛未', 44, 54),
-    ('庚午', 54, 64),
-    ('己巳', 64, 74),
-    ('戊辰', 74, 84),
+    # (干支, 起年龄, 止年龄)
+    # 应动态计算：从月柱逆排 (阴年男命) 或顺排 (阳年男命/女命)
 ]
 
+# 默认示例序列（应替换为 engine 计算）
+_示例大运 = [
+    ('乙亥', 4, 14), ('甲戌', 14, 24), ('癸酉', 24, 34),
+    ('壬申', 34, 44), ('辛未', 44, 54), ('庚午', 54, 64),
+    ('己巳', 64, 74), ('戊辰', 74, 84),
+]
+大运天数 = 2980  # 从实际起运日计算（示例值）
+
 def 当前大运(age):
-    for stem_branch, start, end in 大运序列:
+    for stem_branch, start, end in (_示例大运 if not 大运序列 else 大运序列):
         if start <= age < end:
             return stem_branch, start, end
-    return 大运序列[-1][0], 大运序列[-1][1], 大运序列[-1][2]
+    seq = (_示例大运 if not 大运序列 else 大运序列)
+    return seq[-1][0], seq[-1][1], seq[-1][2]
 
 # ═══════════════════════════════════════════════════════════════════
 # 关系引擎
@@ -691,7 +694,7 @@ def 生成报告():
     tai_stem, tai_branch = 胎元(本命['月']['干'], 本命['月']['支'])
 
     # 当前年龄
-    >birth_date = datetime(year, month, day, hour, minute)  # from user profile
+    birth_date = datetime(b['year'], b['month'], b['day'], b['hour'], b['minute'])
     age = now_local.year - birth_date.year
     if (now_local.month, now_local.day) < (birth_date.month, birth_date.day):
         age -= 1
@@ -907,7 +910,6 @@ def 生成报告():
     }
 
     return '\n'.join(report), 今, 摘要
-
 
 if __name__ == '__main__':
     报告, _, 摘要 = 生成报告()

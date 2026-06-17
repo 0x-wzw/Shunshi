@@ -2,7 +2,7 @@
 """
 八字24小时全日对参（天文精算版）— {_USER_NAME}
 出生：
-
+ | 大运：辛未
 
 功能：每日运行一次，输出当日12个时辰完整对参报告
 """
@@ -29,7 +29,6 @@ myt = timedelta(hours=8)
     ('亥', 21, 23, '21:00-23:00'),
 ]
 
-
 def _get_static_day(date_myt):
     """取得当日不变的四柱元素（年/月/日柱），用正午计算。"""
     noon_utc = datetime(date_myt.year, date_myt.month, date_myt.day, 4, 0, 0, tzinfo=timezone.utc)
@@ -42,7 +41,6 @@ def _get_static_day(date_myt):
         '旬空': xunkong,
     }
 
-
 def _get_hour_chart(day_chart, rep_h):
     """取得指定小时的完整四柱。"""
     # rep_h 是 MYT 小时（0-23）
@@ -53,7 +51,6 @@ def _get_hour_chart(day_chart, rep_h):
     chart, _, _, _, _ = bz.当前四柱(test_utc)
     return chart
 
-
 def _analyze_period(natal, transit):
     """对本命与流运四柱做关系分析。"""
     results = {}
@@ -63,7 +60,6 @@ def _analyze_period(natal, transit):
     results['日↔流月'] = bz.参对本命柱柱(natal['日'], transit['月'])
     results['日↔流年'] = bz.参对本命柱柱(natal['日'], transit['年'])
     return results
-
 
 def _score_period(aspects_dict):
     """为单个时辰打分并分类吉凶。"""
@@ -79,12 +75,10 @@ def _score_period(aspects_dict):
     score = len(吉) * 1.0 - len(凶) * 1.5 + len(平) * 0.2
     return score, 吉, 凶, 平
 
-
 def _hour_pillar(day_stem, hour_branch):
     """计算时柱天干地支。当前四柱()已经计算时支，但时干需重新算。"""
     hs = bz.时干(day_stem, hour_branch)
     return hs, hour_branch
-
 
 def 生成全日报告(target_date_myt=None):
     if target_date_myt is None:
@@ -108,7 +102,7 @@ def 生成全日报告(target_date_myt=None):
     旺相 = bz.旺相状态(今['月']['支'])
 
     # 年龄与大运
-    >birth = datetime(year, month, day, hour, minute)  # from user profile
+    birth = datetime(b['year'], b['month'], b['day'], b['hour'], b['minute'])
     age = target_date_myt.year - birth.year
     if (target_date_myt.month, target_date_myt.day) < (birth.month, birth.day):
         age -= 1
@@ -126,7 +120,7 @@ def 生成全日报告(target_date_myt=None):
     report.append(f"{'='*52}")
     report.append(f"")
     report.append(f"📅 {date_cn} 大马时间")
-    report.append(f"👤 {_USER_NAME} | 日主丁火 | 本命：>{?} {?} {?} {?}")
+    report.append(f"👤 {_USER_NAME} | 日主丁火 | ")
     report.append(f"🎋 节气：{今节气} | 值日：{值日神}日")
     report.append(f"🧭 煞方：{今煞方} | 纳音：{今纳音}")
     report.append(f"📌 旬空：{旬空日[0]}、{旬空日[1]} | 大运：{大运当前}（{大运始}–{大运终}岁）")
@@ -333,7 +327,6 @@ def 生成全日报告(target_date_myt=None):
     }
 
     return '\n'.join(report), summary, date_str
-
 
 if __name__ == '__main__':
     报告, 摘要, date_str = 生成全日报告()

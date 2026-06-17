@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-Bazi Bi-Hourly Aspect Comparison for {_USER_NAME} {_USER_NAME}
-Born: 
-Timezone: UTC+7:30 (Malaysia used MYT = UTC+7:30 before Jan 1, 1982)
+Bazi Bi-Hourly Aspect Comparison
+Loads user profile from ~/.hermes/.bazi-private.json or environment variables.
 Natal Chart comparison against current transit pillars.
 """
 
@@ -109,22 +108,65 @@ HOUR_BRANCHES = [
 
 # ═══════════════════════════════════════════════════════════════════
 # NATAL CHART — {_USER_NAME} {_USER_NAME}
-# Born 
+# ═══════════════════════════════════════════════════════════════════
+# USER PROFILE LOADER
 # ═══════════════════════════════════════════════════════════════════
 
-# Pre-verified natal chart (from previous sessions):
-# >Before 立春 (Year) → previous lunar year
-# Month: 子月 (Rat month, Dec 7 - Jan 4ish) → 丙子 Bing Zi
-# Day: Using JDN formula for >YYYY-MM-DD → 丁丑 Ding Chou
-# Hour: 10:35 AM → 巳时 (Si, 9-11am), Day stem 丁 → 五鼠遁 → 乙巳 Yi Si
+import os, sys, json as _json
 
-NATAL_CHART = {
-    'year':  {'stem': '己', 'branch': '未'},
-    'month': {'stem': '丙', 'branch': '子'},
-    'day':   {'stem': '丁', 'branch': '丑'},
-    'hour':  {'stem': '乙', 'branch': '巳'},
-}
-DAY_MASTER = '丁'  # Ding Fire
+def _load_user_profile():
+    home = os.path.expanduser("~/.hermes")
+    priv = os.path.join(home, ".bazi-private.json")
+    if os.path.exists(priv):
+        with open(priv, encoding="utf-8") as f:
+            return _json.load(f)
+    return {
+        "name": os.getenv("BAZI_NAME", "User"),
+        "birth": {
+            "year": int(os.getenv("BAZI_BIRTH_YEAR", "1990")),
+            "month": int(os.getenv("BAZI_BIRTH_MONTH", "1")),
+            "day": int(os.getenv("BAZI_BIRTH_DAY", "1")),
+            "hour": int(os.getenv("BAZI_BIRTH_HOUR", "12")),
+            "minute": int(os.getenv("BAZI_BIRTH_MINUTE", "0")),
+        },
+        "gender": os.getenv("BAZI_GENDER", "male"),
+    }
+
+_PROFILE = _load_user_profile()
+_USER_NAME = _PROFILE.get("name", "User")
+
+# Build natal chart from engine if available; fallback to cached data
+try:
+    _eng = os.path.join(os.path.dirname(__file__), "..", "engine")
+    if _eng not in sys.path:
+        sys.path.insert(0, _eng)
+    from celestial_computations.logos import BaziCalculator
+    _bc = BaziCalculator()
+    _b = _PROFILE["birth"]
+    _fp = _bc.calculate(_b["year"], _b["month"], _b["day"], _b["hour"])
+    NATAL_CHART = {
+        "year":  {"stem": _fp.year_pillar[0].character,   "branch": _fp.year_pillar[1].character},
+        "month": {"stem": _fp.month_pillar[0].character,  "branch": _fp.month_pillar[1].character},
+        "day":   {"stem": _fp.day_pillar[0].character,    "branch": _fp.day_pillar[1].character},
+        "hour":  {"stem": _fp.hour_pillar[0].character,   "branch": _fp.hour_pillar[1].character},
+    }
+    DAY_MASTER = _fp.day_master.character
+except Exception:
+    # Fallback: parse cached bazi string or use default
+    _cached = _PROFILE.get("bazi", "").split()
+    if len(_cached) == 4:
+        _yr, _mo, _dy, _hr = _cached
+        NATAL_CHART = {
+            "year":  {"stem": _yr[0], "branch": _yr[1]},
+            "month": {"stem": _mo[0], "branch": _mo[1]},
+            "day":   {"stem": _dy[0], "branch": _dy[1]},
+            "hour":  {"stem": _hr[0], "branch": _hr[1]},
+        }
+        DAY_MASTER = _PROFILE.get("day_master", "丁")
+    else:
+        NATAL_CHART = {"year": {"stem": "甲", "branch": "子"}, "month": {"stem": "甲", "branch": "子"},
+                       "day":   {"stem": "甲", "branch": "子"}, "hour":  {"stem": "甲", "branch": "子"}}
+        DAY_MASTER = "甲"
 
 # ═══════════════════════════════════════════════════════════════════
 # COMPUTATION ENGINE
@@ -508,7 +550,6 @@ def generate_report():
     report.append(f"⏭️ Next 时辰: {next_hb}时 ({next_time})")
     
     return '\n'.join(report)
-
 
 if __name__ == '__main__':
     print(generate_report())
